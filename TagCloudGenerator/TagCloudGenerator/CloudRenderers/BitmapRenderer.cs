@@ -4,13 +4,15 @@ using TagCloudGenerator.CloudGenerators;
 
 namespace TagCloudGenerator.CloudRenderers
 {
-    class PngRenderer : ICloudRenderer
+    class BitmapRenderer : ICloudRenderer
     {
         readonly string filename;
+        readonly ImageFormat format;
 
-        public PngRenderer(string filename)
+        public BitmapRenderer(string filename, ImageFormat format)
         {
             this.filename = filename;
+            this.format = format;
         }
 
         public void Render(CloudScheme scheme)
@@ -23,7 +25,7 @@ namespace TagCloudGenerator.CloudRenderers
                     foreach (var view in scheme.WordViews)
                         g.DrawString(view.Word, view.Font, new SolidBrush(view.Color), view.Position);
                 }
-                bitmap.Save(filename, ImageFormat.Png);
+                bitmap.Save(filename, format);
             }
         }
     }

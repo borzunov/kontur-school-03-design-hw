@@ -52,6 +52,7 @@
     <Compile Include="CloudGenerators\CloudScheme.cs" />
     <Compile Include="CloudGenerators\SimpleCloudGenerator.cs" />
     <Compile Include="CloudGenerators\WordView.cs" />
+    <Compile Include="CloudProcessor.cs" />
     <Compile Include="CloudRenderers\PngRenderer.cs" />
     <Compile Include="WordsFilters\MostCommonWordsFilter.cs" />
     <Compile Include="WordsFilters\GrammarFormsFilter.cs" />
