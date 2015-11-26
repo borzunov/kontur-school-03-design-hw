@@ -21,7 +21,7 @@ namespace TagCloudGenerator.CloudRenderers
             {
                 using (var g = Graphics.FromImage(bitmap))
                 {
-                    g.Clear(Color.White);
+                    g.Clear(scheme.BackgroundColor);
                     foreach (var view in scheme.WordViews)
                         g.DrawString(view.Word, view.Font, new SolidBrush(view.Color), view.Position);
                 }
