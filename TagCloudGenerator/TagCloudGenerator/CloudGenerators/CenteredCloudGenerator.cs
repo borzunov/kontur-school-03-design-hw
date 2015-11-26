@@ -24,7 +24,7 @@ namespace TagCloudGenerator.CloudGenerators
                 (Size.Width - wordSize.Width) / 2,
                 (Size.Height - wordSize.Height) / 2
             );
-            return new WordView(word, font, textColor, position);
+            return new WordView(word, font, textColor, position, wordSize);
         }
 
         WordView PlaceNextWord(string word, Font font, IReadOnlyList<WordView> alreadyPlacedWords)
@@ -42,13 +42,11 @@ namespace TagCloudGenerator.CloudGenerators
                 );
                 var curRect = new Rectangle(curPosition, wordSize);
 
-                var intersect = alreadyPlacedWords
-                    .Select(placedWord => new Rectangle(
-                        placedWord.Position,
-                        MeasureString(placedWord.Word, placedWord.Font)))
-                    .Any(placedRect => curRect.IntersectsWith(placedRect));
-                if (!intersect)
-                    return new WordView(word, font, textColor, curPosition);
+                var hasIntersection = alreadyPlacedWords
+                    .Select(placedWord => new Rectangle(placedWord.Position, placedWord.Size))
+                    .Any(curRect.IntersectsWith);
+                if (!hasIntersection)
+                    return new WordView(word, font, textColor, curPosition, wordSize);
             }
             return null;
         }
