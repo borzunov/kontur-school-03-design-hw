@@ -32,7 +32,14 @@ Options:
     --text-color=<color>     Text color (in HTML notation) [default: green].
     --font-family=<name>     Font family [default: Times New Roman].
     --width=<pixels>         Image width [default: 350].
-    --height=<pixels>        Image height [default: 350].";
+    --height=<pixels>        Image height [default: 350].
+
+This program works only with Russian texts. Only nouns and adjectives are displayed.
+If a word was found in various forms, all occurrences are counted but only
+the most common form is displayed.
+
+Yandex Mystem is used to find out grammar properties of the words. More info:
+    https://tech.yandex.ru/mystem/";
 
         static readonly Dictionary<string, ImageFormat> ImageFormats = new Dictionary<string, ImageFormat>()
         {
