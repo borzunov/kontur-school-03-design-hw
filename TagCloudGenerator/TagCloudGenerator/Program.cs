@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using DocoptNet;
 using Ninject;
 using TagCloudGenerator.CloudGenerators;
@@ -31,6 +32,15 @@ Options:
     --font-family=<name>     Set font family [default: Times New Roman].
     --width=<pixels>         Set image width [default: 350].
     --height=<pixels>        Set image height [default: 350].";
+
+        static readonly Dictionary<string, ImageFormat> ImageFormats = new Dictionary<string, ImageFormat>()
+        {
+            {".png", ImageFormat.Png},
+            {".bmp", ImageFormat.Bmp},
+            {".gif", ImageFormat.Gif},
+            {".jpg", ImageFormat.Jpeg},
+            {".jpeg", ImageFormat.Jpeg},
+        }; 
 
         static void Main(string[] args)
         {
@@ -70,9 +80,16 @@ Options:
                         new Size(options["--width"].AsInt, options["--height"].AsInt));
 
                 var imageFilename = options["<output-image>"].ToString();
+                var imageExtension = Path.GetExtension(imageFilename).ToLower();
+                ImageFormat imageFormat;
+                if (ImageFormats.ContainsKey(imageExtension))
+                    imageFormat = ImageFormats[imageExtension];
+                else
+                    throw new ArgumentException($"*.{imageExtension} images aren't supported");
+
                 container.Bind<ICloudRenderer>().To<BitmapRenderer>()
                     .WithConstructorArgument("filename", imageFilename)
-                    .WithConstructorArgument("format", ImageFormat.Png);
+                    .WithConstructorArgument("format", imageFormat);
 
                 container.Bind<CloudProcessor>().ToSelf()
                     .WithConstructorArgument("wordsFilters", new IWordsFilter[]
@@ -83,6 +100,7 @@ Options:
                     });
 
                 container.Get<CloudProcessor>().Process();
+
                 Console.WriteLine($"[+] Cloud saved to \"{imageFilename}\"");
             }
             catch (Exception e)
