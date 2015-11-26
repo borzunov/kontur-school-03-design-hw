@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Imaging;
 using TagCloudGenerator.CloudGenerators;
 using TagCloudGenerator.CloudRenderers;
@@ -25,7 +27,8 @@ namespace TagCloudGenerator
                     new GrammarFormsJoiner(),
                     new MostCommonWordsFilter(20),
                 },
-                new SimpleCloudGenerator(),
+                new CenteredCloudGenerator(Color.White, Color.Green, "Times New Roman", new Size(350, 350),
+                    new Random()), 
                 new BitmapRenderer("output.png", ImageFormat.Png)
             );
             cloudProcessor.Process();

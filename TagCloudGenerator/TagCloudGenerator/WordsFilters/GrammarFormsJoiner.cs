@@ -4,7 +4,7 @@ using TagCloudGenerator.GrammarInfo;
 
 namespace TagCloudGenerator.WordsFilters
 {
-    class GrammarFormsFilter : IWordsFilter
+    class GrammarFormsJoiner : IWordsFilter
     {
         public Dictionary<string, int> Filter(IReadOnlyDictionary<string, int> statistics,
             IReadOnlyDictionary<string, WordGrammarInfo> grammarInfo)
