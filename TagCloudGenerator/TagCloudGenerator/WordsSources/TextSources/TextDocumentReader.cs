@@ -11,7 +11,7 @@ namespace TagCloudGenerator.WordsSources.TextSources
             this.filename = filename;
         }
 
-        protected override string GetText()
+        public override string GetText()
         {
             return File.ReadAllText(filename);
         }
