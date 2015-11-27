@@ -7,13 +7,13 @@ namespace TagCloudGenerator.CloudGenerators
 {
     class CenteredCloudGenerator : GraphicsCloudGeneratorBase
     {
-        readonly Color textColor;
+        public readonly Color TextColor;
         readonly Random random;
 
         public CenteredCloudGenerator(Color backgroundColor, Color textColor, string fontFamilyName, Size size,
             Random random) : base(backgroundColor, size, fontFamilyName)
         {
-            this.textColor = textColor;
+            TextColor = textColor;
             this.random = random;
         }
 
@@ -24,7 +24,7 @@ namespace TagCloudGenerator.CloudGenerators
                 (Size.Width - wordSize.Width) / 2,
                 (Size.Height - wordSize.Height) / 2
             );
-            return new WordView(word, font, textColor, position, wordSize);
+            return new WordView(word, font, TextColor, position, wordSize);
         }
 
         WordView PlaceNextWord(string word, Font font, IReadOnlyList<WordView> alreadyPlacedWords)
@@ -46,7 +46,7 @@ namespace TagCloudGenerator.CloudGenerators
                     .Select(placedWord => new Rectangle(placedWord.Position, placedWord.Size))
                     .Any(curRect.IntersectsWith);
                 if (!hasIntersection)
-                    return new WordView(word, font, textColor, curPosition, wordSize);
+                    return new WordView(word, font, TextColor, curPosition, wordSize);
             }
             return null;
         }

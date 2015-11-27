@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CloudGenerators\CenteredCloudGenerator.cs" />
+    <Compile Include="CloudGenerators\CenteredCloudGenerator_Tests.cs" />
     <Compile Include="CloudGenerators\GraphicsCloudGeneratorBase.cs" />
     <Compile Include="CloudGenerators\CloudScheme.cs" />
     <Compile Include="CloudGenerators\WordView.cs" />

@@ -6,9 +6,9 @@ namespace TagCloudGenerator.CloudGenerators
 {
     abstract class GraphicsCloudGeneratorBase : ICloudGenerator
     {
-        protected readonly Color BackgroundColor;
-        protected readonly Size Size;
-        protected readonly string FontFamilyName;
+        public readonly Color BackgroundColor;
+        public readonly Size Size;
+        public readonly string FontFamilyName;
 
         protected GraphicsCloudGeneratorBase(Color backgroundColor, Size size, string fontFamilyName)
         {
