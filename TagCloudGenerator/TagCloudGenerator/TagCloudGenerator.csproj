@@ -73,9 +73,13 @@
     <Compile Include="CloudRenderers\BitmapRenderer.cs" />
     <Compile Include="GrammarInfo\MystemGrammarInfoParser_Tests.cs" />
     <Compile Include="OptionsFiller.cs" />
+    <Compile Include="WordsFilters\GrammarFormsJoiner_Tests.cs" />
     <Compile Include="WordsFilters\LengthFilter.cs" />
+    <Compile Include="WordsFilters\LengthFilter_Tests.cs" />
     <Compile Include="WordsFilters\MostCommonWordsFilter.cs" />
     <Compile Include="WordsFilters\GrammarFormsJoiner.cs" />
+    <Compile Include="WordsFilters\MostCommonWordsFilter_Tests.cs" />
+    <Compile Include="WordsFilters\PartsOfSpeechFilter_Tests.cs" />
     <Compile Include="WordsFilters\PartsOfSpeechFilter.cs" />
     <Compile Include="GrammarInfo\IGrammarInfoParser.cs" />
     <Compile Include="GrammarInfo\MystemGrammarInfoParser.cs" />
