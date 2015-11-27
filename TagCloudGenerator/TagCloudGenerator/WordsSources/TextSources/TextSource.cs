@@ -8,9 +8,11 @@ namespace TagCloudGenerator.WordsSources.TextSources
     {
         public abstract string GetText();
 
+        static readonly Regex WordOccurenceRegex = new Regex(@"[\p{L}-']+");
+
         public List<string> GetWords()
         {
-            return (from Match match in new Regex(@"[\p{L}-']+").Matches(GetText())
+            return (from Match match in WordOccurenceRegex.Matches(GetText())
                     select match.Value)
                    .ToList();
         }

@@ -15,11 +15,13 @@ namespace TagCloudGenerator.WordsSources
             this.filename = filename;
         }
 
+        static readonly Regex WordRegex = new Regex(@"^[\p{L}-']+$");
+
         public List<string> GetWords()
         {
             var lines = File.ReadAllLines(filename);
             foreach (var line in lines)
-                if (!new Regex(@"^[\p{L}-']+$").IsMatch(line))
+                if (!WordRegex.IsMatch(line))
                     throw new FormatException(
                         $"Line \"${line}\" contains characters that isn't allowed in a word");
             return lines.ToList();
