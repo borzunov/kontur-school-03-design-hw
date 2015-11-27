@@ -92,12 +92,17 @@ namespace TagCloudGenerator.GrammarInfo
 
         public Dictionary<string, WordGrammarInfo> GetGrammarInfo(IEnumerable<string> words)
         {
-            var outputLines = CommunicateWithProcess(words);
-
-            return outputLines
+            var wordsList = words
+                .Where(word => !word.Contains('\''))
+                .ToList();
+            var parsedOutput = CommunicateWithProcess(wordsList)
                 .Select(ParseOutputLine)
-                .Where(parsed => parsed != null)
-                .ToDictionary(parsed => parsed.Item1, parsed => parsed.Item2);
+                .Where(parsed => parsed != null);
+
+            var result = new Dictionary<string, WordGrammarInfo>();
+            foreach (var parsed in parsedOutput)
+                result[parsed.Item1] = parsed.Item2;
+            return result;
         }
     }
 }

@@ -10,6 +10,7 @@ namespace TagCloudGenerator.WordsFilters
             IReadOnlyDictionary<string, WordGrammarInfo> grammarInfo)
         {
             var wordsGroupedByInitialForm = statistics.Keys
+                .Where(grammarInfo.ContainsKey)
                 .GroupBy(word => grammarInfo[word].InitialForm);
             return wordsGroupedByInitialForm
                 .Select(wordForms => new

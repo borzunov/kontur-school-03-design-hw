@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace TagCloudGenerator.WordsSources
 {
@@ -15,7 +17,12 @@ namespace TagCloudGenerator.WordsSources
 
         public List<string> GetWords()
         {
-            return File.ReadAllLines(filename).ToList();
+            var lines = File.ReadAllLines(filename);
+            foreach (var line in lines)
+                if (!new Regex(@"^[\p{L}-']+$").IsMatch(line))
+                    throw new ArgumentException(
+                        $"Line \"${line}\" contains characters that isn't allowed in a word");
+            return lines.ToList();
         }
     }
 }

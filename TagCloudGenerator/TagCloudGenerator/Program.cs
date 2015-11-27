@@ -18,12 +18,12 @@ namespace TagCloudGenerator
         const string Usage = @"Simple Tag Clound Generator
 
 Usage:
-    TagCloudGenerator.exe (--word-list=<filename> | --text=<filename>) <output-image> [options]
+    TagCloudGenerator.exe (--words-list=<filename> | --text=<filename>) <output-image> [options]
     TagCloudGenerator.exe (-h | --help)
 
 Options:
     -h, --help               Show this screen.
-    --word-list=<filename>   Load words from text file that contains one word per line.
+    --words-list=<filename>  Load words from text file that contains one word per line.
     --text=<filename>        Load words from document with text (only *.txt is supported yet).
     --count=<count>          Maximal count of words that will be displayed [default: 20].
     --min-length=<value>     Minimal length of words that will be displayed [default: 3].
@@ -42,7 +42,7 @@ Yandex Mystem is used to find out grammar properties of the words. More info:
 
         class Options
         {
-            public string WordList { get; set; }
+            public string WordsList { get; set; }
             public string Text { get; set; }
             public string OutputImage { get; set; }
 
@@ -84,9 +84,9 @@ Yandex Mystem is used to find out grammar properties of the words. More info:
 
                 var container = new StandardKernel();
 
-                if (options.WordList != null)
+                if (options.WordsList != null)
                     container.Bind<IWordsSource>().To<WordsListReader>()
-                        .WithConstructorArgument(options.WordList);
+                        .WithConstructorArgument(options.WordsList);
                 else if (options.Text != null)
                     container.Bind<IWordsSource>().To<TextDocumentReader>()
                         .WithConstructorArgument(options.Text);
@@ -130,7 +130,7 @@ Yandex Mystem is used to find out grammar properties of the words. More info:
                 Console.WriteLine(
                     $"[+] Cloud saved to \"{options.OutputImage}\" ({options.Width}x{options.Height})");
             }
-            catch (Exception e)
+            catch (Exception e) when (e is ArgumentException || e is IOException)
             {
                 Console.WriteLine($"[-] Error: {e.Message}");
             }
