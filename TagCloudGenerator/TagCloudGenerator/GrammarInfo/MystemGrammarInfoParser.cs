@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -10,22 +11,32 @@ namespace TagCloudGenerator.GrammarInfo
 {
     class MystemGrammarInfoParser : IGrammarInfoParser
     {
+        static string GetMystemPath()
+        {
+            var directoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
+            if (directoryName == null)
+                return "";
+            return new Uri(directoryName).LocalPath;
+        }
+
+        public static readonly string MystemPath = GetMystemPath();
+
         public const string MystemExecutableFilename = "mystem.exe";
         const string MystemArguments = "-i -n";
 
-        static List<string> CommunicateWithProcess(IEnumerable<string> inputLines)
+        List<string> CommunicateWithProcess(IEnumerable<string> inputLines)
         {
             var process = new Process
             {
                 StartInfo =
                 {
-                    FileName = MystemExecutableFilename,
+                    FileName = Path.Combine(MystemPath, MystemExecutableFilename),
                     Arguments = MystemArguments,
                     UseShellExecute = false,
                     RedirectStandardInput = true,
                     RedirectStandardOutput = true,
                     StandardOutputEncoding = Encoding.UTF8,
-                    //CreateNoWindow = true,
+                    CreateNoWindow = true,
                 }
             };
 
