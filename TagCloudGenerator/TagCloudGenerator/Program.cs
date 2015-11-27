@@ -130,7 +130,7 @@ Yandex Mystem is used to find out grammar properties of the words. More info:
                 Console.WriteLine(
                     $"[+] Cloud saved to \"{options.OutputImage}\" ({options.Width}x{options.Height})");
             }
-            catch (Exception e) when (e is ArgumentException || e is IOException)
+            catch (Exception e) when (e is ArgumentException || e is FormatException || e is IOException)
             {
                 Console.WriteLine($"[-] Error: {e.Message}");
             }

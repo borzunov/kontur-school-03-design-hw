@@ -20,7 +20,7 @@ namespace TagCloudGenerator.WordsSources
             var lines = File.ReadAllLines(filename);
             foreach (var line in lines)
                 if (!new Regex(@"^[\p{L}-']+$").IsMatch(line))
-                    throw new ArgumentException(
+                    throw new FormatException(
                         $"Line \"${line}\" contains characters that isn't allowed in a word");
             return lines.ToList();
         }
