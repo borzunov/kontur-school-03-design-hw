@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using DocoptNet;
 using Ninject;
 using TagCloudGenerator.CloudGenerators;
 using TagCloudGenerator.CloudRenderers;
@@ -41,6 +40,22 @@ the most common form is displayed.
 Yandex Mystem is used to find out grammar properties of the words. More info:
     https://tech.yandex.ru/mystem/";
 
+        class Options
+        {
+            public string WordList { get; set; }
+            public string Text { get; set; }
+            public string OutputImage { get; set; }
+
+            public int Count { get; set; }
+            public int MinLength { get; set; }
+
+            public Color BgColor { get; set; }
+            public Color TextColor { get; set; }
+            public string FontFamily { get; set; }
+            public int Width { get; set; }
+            public int Height { get; set; }
+        }
+
         static readonly Dictionary<string, ImageFormat> ImageFormats = new Dictionary<string, ImageFormat>()
         {
             {".png", ImageFormat.Png},
@@ -48,22 +63,33 @@ Yandex Mystem is used to find out grammar properties of the words. More info:
             {".gif", ImageFormat.Gif},
             {".jpg", ImageFormat.Jpeg},
             {".jpeg", ImageFormat.Jpeg},
-        }; 
+        };
+
+        static ImageFormat GetImageFormat(string filename)
+        {
+            var imageExtension = Path.GetExtension(filename);
+            if (imageExtension == null)
+                throw new ArgumentException("Can't determine image format by extension");
+            imageExtension = imageExtension.ToLower();
+            if (!ImageFormats.ContainsKey(imageExtension))
+                throw new ArgumentException($"*.{imageExtension} images aren't supported");
+            return ImageFormats[imageExtension];
+        }
 
         static void Main(string[] args)
         {
             try
             {
-                var options = new Docopt().Apply(Usage, args, exit: true);
+                var options = OptionsFiller.Fill<Options>(Usage, args);
 
                 var container = new StandardKernel();
 
-                if (options["--word-list"] != null)
+                if (options.WordList != null)
                     container.Bind<IWordsSource>().To<WordsListReader>()
-                        .WithConstructorArgument(options["--word-list"].ToString());
-                else if (options["--text"] != null)
+                        .WithConstructorArgument(options.WordList);
+                else if (options.Text != null)
                     container.Bind<IWordsSource>().To<TextDocumentReader>()
-                        .WithConstructorArgument(options["--text"].ToString());
+                        .WithConstructorArgument(options.Text);
                 else
                     throw new ArgumentException("You should specify either --word-list or --text");
 
@@ -76,30 +102,19 @@ Yandex Mystem is used to find out grammar properties of the words. More info:
                         PartOfSpeech.Noun,
                     });
                 container.Bind<LengthFilter>().ToSelf()
-                    .WithConstructorArgument("minLength", options["--min-length"].AsInt);
+                    .WithConstructorArgument("minLength", options.MinLength);
                 container.Bind<MostCommonWordsFilter>().ToSelf()
-                    .WithConstructorArgument("count", options["--count"].AsInt);
+                    .WithConstructorArgument("count", options.Count);
 
                 container.Bind<ICloudGenerator>().To<CenteredCloudGenerator>()
-                    .WithConstructorArgument("backgroundColor",
-                        ColorTranslator.FromHtml(options["--bg-color"].ToString()))
-                    .WithConstructorArgument("textColor",
-                        ColorTranslator.FromHtml(options["--text-color"].ToString()))
-                    .WithConstructorArgument("fontFamilyName", options["--font-family"].ToString())
-                    .WithConstructorArgument("size",
-                        new Size(options["--width"].AsInt, options["--height"].AsInt));
-
-                var imageFilename = options["<output-image>"].ToString();
-                var imageExtension = Path.GetExtension(imageFilename).ToLower();
-                ImageFormat imageFormat;
-                if (ImageFormats.ContainsKey(imageExtension))
-                    imageFormat = ImageFormats[imageExtension];
-                else
-                    throw new ArgumentException($"*.{imageExtension} images aren't supported");
+                    .WithConstructorArgument("backgroundColor", options.BgColor)
+                    .WithConstructorArgument("textColor", options.TextColor)
+                    .WithConstructorArgument("fontFamilyName", options.FontFamily)
+                    .WithConstructorArgument("size", new Size(options.Width, options.Height));
 
                 container.Bind<ICloudRenderer>().To<BitmapRenderer>()
-                    .WithConstructorArgument("filename", imageFilename)
-                    .WithConstructorArgument("format", imageFormat);
+                    .WithConstructorArgument("filename", options.OutputImage)
+                    .WithConstructorArgument("format", GetImageFormat(options.OutputImage));
 
                 container.Bind<CloudProcessor>().ToSelf()
                     .WithConstructorArgument("wordsFilters", new IWordsFilter[]
@@ -112,7 +127,8 @@ Yandex Mystem is used to find out grammar properties of the words. More info:
 
                 container.Get<CloudProcessor>().Process();
 
-                Console.WriteLine($"[+] Cloud saved to \"{imageFilename}\"");
+                Console.WriteLine(
+                    $"[+] Cloud saved to \"{options.OutputImage}\" ({options.Width}x{options.Height})");
             }
             catch (Exception e)
             {

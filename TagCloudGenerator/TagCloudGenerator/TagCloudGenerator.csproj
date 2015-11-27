@@ -63,6 +63,7 @@
     <Compile Include="CloudGenerators\WordView.cs" />
     <Compile Include="CloudProcessor.cs" />
     <Compile Include="CloudRenderers\BitmapRenderer.cs" />
+    <Compile Include="OptionsFiller.cs" />
     <Compile Include="WordsFilters\LengthFilter.cs" />
     <Compile Include="WordsFilters\MostCommonWordsFilter.cs" />
     <Compile Include="WordsFilters\GrammarFormsJoiner.cs" />
