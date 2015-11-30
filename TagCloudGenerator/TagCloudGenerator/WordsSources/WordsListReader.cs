@@ -19,6 +19,7 @@ namespace TagCloudGenerator.WordsSources
         {
             var lines = File.ReadAllLines(filename);
             foreach (var line in lines)
+                // CR (krait): Regex можно закешировать.
                 if (!new Regex(@"^[\p{L}-']+$").IsMatch(line))
                     throw new FormatException(
                         $"Line \"${line}\" contains characters that isn't allowed in a word");

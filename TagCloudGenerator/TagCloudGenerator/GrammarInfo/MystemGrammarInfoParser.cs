@@ -16,6 +16,7 @@ namespace TagCloudGenerator.GrammarInfo
             var directoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
             if (directoryName == null)
                 return "";
+            // CR (krait): А зачем нужно это преобразование?
             return new Uri(directoryName).LocalPath;
         }
 
