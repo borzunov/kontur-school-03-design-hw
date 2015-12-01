@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace TagCloudGenerator.CloudGenerators
@@ -35,11 +36,11 @@ namespace TagCloudGenerator.CloudGenerators
 
             var scheme = GeneratorExample.Generate(rating);
 
-            Assert.AreEqual(scheme.BackgroundColor, GeneratorExample.BackgroundColor);
-            Assert.IsTrue(scheme.WordViews.All(view => view.Color == GeneratorExample.TextColor));
-            Assert.IsTrue(scheme.WordViews.All(
-                view => view.Font.FontFamily.Name == GeneratorExample.FontFamilyName));
-            Assert.AreEqual(scheme.Size, GeneratorExample.Size);
+            scheme.BackgroundColor.Should().Be(GeneratorExample.BackgroundColor);
+            scheme.WordViews.Should().OnlyContain(view => view.Color == GeneratorExample.TextColor);
+            scheme.WordViews.Should().OnlyContain(
+                view => view.Font.FontFamily.Name == GeneratorExample.FontFamilyName);
+            scheme.Size.Should().Be(GeneratorExample.Size);
         }
 
         [Test]
@@ -57,7 +58,7 @@ namespace TagCloudGenerator.CloudGenerators
                     if (view1 == view2)
                         continue;
                     var rect2 = new Rectangle(view2.Position, view2.Size);
-                    Assert.IsFalse(rect1.IntersectsWith(rect2));
+                    rect1.IntersectsWith(rect2).Should().BeFalse();
                 }
             }
         }
@@ -75,8 +76,8 @@ namespace TagCloudGenerator.CloudGenerators
             var displayedWords = scheme.WordViews
                 .Select(view => view.Word)
                 .ToArray();
-            Assert.Less(displayedWords.Length, wordsFromRating.Length);
-            CollectionAssert.AreEqual(wordsFromRating.Take(displayedWords.Length), displayedWords);
+            displayedWords.Length.Should().BeLessThan(wordsFromRating.Length);
+            displayedWords.Should().BeEquivalentTo(wordsFromRating.Take(displayedWords.Length));
         }
 
         [Test]
@@ -88,7 +89,7 @@ namespace TagCloudGenerator.CloudGenerators
 
             var wordsFromRating = rating.Select(item => item.Key);
             var displayedWords = scheme.WordViews.Select(view => view.Word);
-            CollectionAssert.AreEquivalent(wordsFromRating, displayedWords);
+            displayedWords.Should().BeEquivalentTo(wordsFromRating);
         }
 
         [Test]
@@ -98,13 +99,14 @@ namespace TagCloudGenerator.CloudGenerators
 
             var scheme = GeneratorExample.Generate(rating);
 
-            var allWords = rating
+            var wordsByPopularity = rating
                 .Select(item => item.Key)
                 .ToArray();
             var views = scheme.WordViews
                 .ToDictionary(view => view.Word, view => view);
             for (var i = 1; i < views.Count; i++)
-                Assert.GreaterOrEqual(views[allWords[i - 1]].Font.Size, views[allWords[i]].Font.Size);
+                views[wordsByPopularity[i - 1]].Font.Size.Should().BeGreaterOrEqualTo(
+                    views[wordsByPopularity[i]].Font.Size);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 using TagCloudGenerator.GrammarInfo;
 
@@ -24,11 +24,11 @@ namespace TagCloudGenerator.WordsFilters
 
             statistics = filter.Filter(statistics, grammarInfo);
 
-            Assert.AreEqual(statistics.Count, 2);
-            Assert.AreEqual(statistics.Count(pair => grammarInfo[pair.Key].InitialForm == "активный" &&
-                                             pair.Value == 30), 1);
-            Assert.AreEqual(statistics.Count(pair => grammarInfo[pair.Key].InitialForm == "команда" &&
-                                             pair.Value == 40), 1);
+            statistics.Keys.Should().HaveCount(2)
+                .And.Contain(key => grammarInfo[key].InitialForm == "активный" &&
+                                    statistics[key] == 30)
+                .And.Contain(key => grammarInfo[key].InitialForm == "команда" &&
+                                    statistics[key] == 40);
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace TagCloudGenerator.WordsFilters
 
             statistics = filter.Filter(statistics, grammarInfo);
             
-            CollectionAssert.AreEquivalent(statistics.Keys, new[] { "активное", "команд" });
+            statistics.Keys.Should().BeEquivalentTo("активное", "команд");
         }
     }
 }

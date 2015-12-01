@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace TagCloudGenerator.WordsFilters
@@ -16,7 +17,7 @@ namespace TagCloudGenerator.WordsFilters
 
             statistics = filter.Filter(statistics, null);
 
-            CollectionAssert.AreEquivalent(statistics, new Dictionary<string, int>
+            statistics.Should().Equal(new Dictionary<string, int>
             {
                 {"работал", 80}, {"существо", 50}
             });
