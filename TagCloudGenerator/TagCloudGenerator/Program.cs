@@ -116,6 +116,7 @@ Yandex Mystem is used to find out grammar properties of the words. More info:
                     .WithConstructorArgument("filename", options.OutputImage)
                     .WithConstructorArgument("format", GetImageFormat(options.OutputImage));
 
+                // CR (krait): Это можно сделать красивее. Можно забиндить 4 реализации к IWordsFilter, и в конструктор CloudProcessor'а они попадут автоматически.
                 container.Bind<CloudProcessor>().ToSelf()
                     .WithConstructorArgument("wordsFilters", new IWordsFilter[]
                     {

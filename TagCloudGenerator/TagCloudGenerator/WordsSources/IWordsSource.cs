@@ -2,7 +2,8 @@
 
 namespace TagCloudGenerator.WordsSources
 {
-    interface IWordsSource {
+    interface IWordsSource
+    {
         List<string> GetWords();
     }
 }
