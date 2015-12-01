@@ -40,7 +40,7 @@ the most common form is displayed.
 Yandex Mystem is used to find out grammar properties of the words. More info:
     https://tech.yandex.ru/mystem/";
 
-        class Options
+        internal class Options
         {
             public string WordsList { get; set; }
             public string Text { get; set; }
@@ -82,58 +82,63 @@ Yandex Mystem is used to find out grammar properties of the words. More info:
             {
                 var options = OptionsFiller.Fill<Options>(Usage, args);
 
-                var container = new StandardKernel();
-
-                if (options.WordsList != null)
-                    container.Bind<IWordsSource>().To<WordsListReader>()
-                        .WithConstructorArgument(options.WordsList);
-                else if (options.Text != null)
-                    container.Bind<IWordsSource>().To<TextDocumentReader>()
-                        .WithConstructorArgument(options.Text);
-                else
-                    throw new ArgumentException("You should specify either --word-list or --text");
-
-                container.Bind<IGrammarInfoParser>().To<MystemGrammarInfoParser>();
-
-                container.Bind<PartsOfSpeechFilter>().ToSelf()
-                    .WithConstructorArgument(new HashSet<PartOfSpeech>
-                    {
-                        PartOfSpeech.Adjective,
-                        PartOfSpeech.Noun,
-                    });
-                container.Bind<LengthFilter>().ToSelf()
-                    .WithConstructorArgument("minLength", options.MinLength);
-                container.Bind<MostCommonWordsFilter>().ToSelf()
-                    .WithConstructorArgument("count", options.Count);
-
-                container.Bind<ICloudGenerator>().To<CenteredCloudGenerator>()
-                    .WithConstructorArgument("backgroundColor", options.BgColor)
-                    .WithConstructorArgument("textColor", options.TextColor)
-                    .WithConstructorArgument("fontFamilyName", options.FontFamily)
-                    .WithConstructorArgument("size", new Size(options.Width, options.Height));
-
-                container.Bind<ICloudRenderer>().To<BitmapRenderer>()
-                    .WithConstructorArgument("filename", options.OutputImage)
-                    .WithConstructorArgument("format", GetImageFormat(options.OutputImage));
-
-                container.Bind<CloudProcessor>().ToSelf()
-                    .WithConstructorArgument("wordsFilters", new IWordsFilter[]
-                    {
-                        container.Get<PartsOfSpeechFilter>(),
-                        container.Get<GrammarFormsJoiner>(),
-                        container.Get<LengthFilter>(),
-                        container.Get<MostCommonWordsFilter>(),
-                    });
-
-                container.Get<CloudProcessor>().Process();
-
-                Console.WriteLine(
-                    $"[+] Cloud saved to \"{options.OutputImage}\" ({options.Width}x{options.Height})");
+                RunWithOptions(options);
             }
             catch (Exception e) when (e is ArgumentException || e is FormatException || e is IOException)
             {
                 Console.WriteLine($"[-] Error: {e.Message}");
             }
+        }
+
+        public static void RunWithOptions(Options options)
+        {
+            var container = new StandardKernel();
+
+            if (options.WordsList != null)
+                container.Bind<IWordsSource>().To<WordsListReader>()
+                    .WithConstructorArgument(options.WordsList);
+            else if (options.Text != null)
+                container.Bind<IWordsSource>().To<TextDocumentReader>()
+                    .WithConstructorArgument(options.Text);
+            else
+                throw new ArgumentException("You should specify either --word-list or --text");
+
+            container.Bind<IGrammarInfoParser>().To<MystemGrammarInfoParser>();
+
+            container.Bind<PartsOfSpeechFilter>().ToSelf()
+                .WithConstructorArgument(new HashSet<PartOfSpeech>
+                {
+                    PartOfSpeech.Adjective,
+                    PartOfSpeech.Noun,
+                });
+            container.Bind<LengthFilter>().ToSelf()
+                .WithConstructorArgument("minLength", options.MinLength);
+            container.Bind<MostCommonWordsFilter>().ToSelf()
+                .WithConstructorArgument("count", options.Count);
+
+            container.Bind<ICloudGenerator>().To<CenteredCloudGenerator>()
+                .WithConstructorArgument("backgroundColor", options.BgColor)
+                .WithConstructorArgument("textColor", options.TextColor)
+                .WithConstructorArgument("fontFamilyName", options.FontFamily)
+                .WithConstructorArgument("size", new Size(options.Width, options.Height));
+
+            container.Bind<ICloudRenderer>().To<BitmapRenderer>()
+                .WithConstructorArgument("filename", options.OutputImage)
+                .WithConstructorArgument("format", GetImageFormat(options.OutputImage));
+
+            container.Bind<CloudProcessor>().ToSelf()
+                .WithConstructorArgument("wordsFilters", new IWordsFilter[]
+                {
+                    container.Get<PartsOfSpeechFilter>(),
+                    container.Get<GrammarFormsJoiner>(),
+                    container.Get<LengthFilter>(),
+                    container.Get<MostCommonWordsFilter>(),
+                });
+
+            container.Get<CloudProcessor>().Process();
+
+            Console.WriteLine(
+                $"[+] Cloud saved to \"{options.OutputImage}\" ({options.Width}x{options.Height})");
         }
     }
 }
