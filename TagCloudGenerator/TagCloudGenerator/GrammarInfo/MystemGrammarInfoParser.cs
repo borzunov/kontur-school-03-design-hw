@@ -11,15 +11,7 @@ namespace TagCloudGenerator.GrammarInfo
 {
     class MystemGrammarInfoParser : IGrammarInfoParser
     {
-        static string GetMystemPath()
-        {
-            var directoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
-            if (directoryName == null)
-                return "";
-            return new Uri(directoryName).LocalPath;
-        }
-
-        public static readonly string MystemPath = GetMystemPath();
+        public static readonly string MystemPath = AppDomain.CurrentDomain.BaseDirectory;
 
         public const string MystemExecutableFilename = "mystem.exe";
         const string MystemArguments = "-i -n";
