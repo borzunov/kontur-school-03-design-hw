@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace TagCloudGenerator.GrammarInfo
@@ -35,10 +30,7 @@ namespace TagCloudGenerator.GrammarInfo
             var partsOfSpeech = words
                 .Select(word => grammarInfo[word].InitialForm);
 
-            CollectionAssert.AreEqual(new[]
-            {
-                "лев", "сделать", "нужный", "задача"
-            }, partsOfSpeech);
+            partsOfSpeech.Should().Equal("лев", "сделать", "нужный", "задача");
         }
     }
 }

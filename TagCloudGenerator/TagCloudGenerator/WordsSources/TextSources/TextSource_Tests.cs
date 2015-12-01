@@ -1,4 +1,5 @@
 ﻿using FakeItEasy;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace TagCloudGenerator.WordsSources.TextSources
@@ -14,7 +15,7 @@ namespace TagCloudGenerator.WordsSources.TextSources
 
             var words = textSource.GetWords();
             
-            CollectionAssert.AreEqual(new[] { "Well-written", "Martin's", "text", "with", "comment" }, words);
+            words.Should().Equal("Well-written", "Martin's", "text", "with", "comment");
         }
 
         [Test]
@@ -26,7 +27,7 @@ namespace TagCloudGenerator.WordsSources.TextSources
 
             var words = textSource.GetWords();
 
-            CollectionAssert.AreEqual(new[] { "Это", "кириллические", "буквы" }, words);
+            words.Should().Equal("Это", "кириллические", "буквы");
         }
     }
 }
