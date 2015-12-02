@@ -23,7 +23,10 @@ namespace TagCloudGenerator.CloudRenderers
                 {
                     g.Clear(scheme.BackgroundColor);
                     foreach (var view in scheme.WordViews)
+                    {
                         g.DrawString(view.Word, view.Font, new SolidBrush(view.Color), view.Position);
+                        //g.DrawRectangle(new Pen(Color.Black), new Rectangle(view.Position, view.Size));
+                    }
                 }
                 bitmap.Save(filename, format);
             }

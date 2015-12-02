@@ -102,7 +102,7 @@ Yandex Mystem is used to find out grammar properties of the words. More info:
             container.Bind<MostCommonWordsFilter>().ToSelf()
                 .WithConstructorArgument("count", options.Count);
 
-            container.Bind<ICloudGenerator>().To<CenteredCloudGenerator>()
+            container.Bind<ICloudGenerator>().To<GravityCloudGenerator>()
                 .WithConstructorArgument("backgroundColor", options.BgColor)
                 .WithConstructorArgument("textColor", options.TextColor)
                 .WithConstructorArgument("fontFamilyName", options.FontFamily)

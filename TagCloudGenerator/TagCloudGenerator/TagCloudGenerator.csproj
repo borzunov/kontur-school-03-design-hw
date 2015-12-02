@@ -77,6 +77,8 @@
     <Compile Include="CloudGenerators\CenteredCloudGenerator_Tests.cs" />
     <Compile Include="CloudGenerators\GraphicsCloudGeneratorBase.cs" />
     <Compile Include="CloudGenerators\CloudScheme.cs" />
+    <Compile Include="CloudGenerators\GravityCloudGenerator.cs" />
+    <Compile Include="CloudGenerators\RandomExtensions.cs" />
     <Compile Include="CloudGenerators\WordView.cs" />
     <Compile Include="CloudProcessor.cs" />
     <Compile Include="CloudRenderers\BitmapRenderer.cs" />
