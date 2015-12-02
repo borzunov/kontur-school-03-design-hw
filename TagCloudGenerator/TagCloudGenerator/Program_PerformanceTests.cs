@@ -6,6 +6,7 @@ using NUnit.Framework;
 
 namespace TagCloudGenerator
 {
+    [TestFixture, Explicit]
     class Program_PerformanceTests
     {
         const int WarmupRunsCount = 5;
