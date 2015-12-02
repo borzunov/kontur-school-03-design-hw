@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace TagCloudGenerator.WordsSources.TextSources
 {
@@ -8,13 +6,27 @@ namespace TagCloudGenerator.WordsSources.TextSources
     {
         public abstract string GetText();
 
-        static readonly Regex WordOccurenceRegex = new Regex(@"[\p{L}-']+");
-
         public List<string> GetWords()
         {
-            return (from Match match in WordOccurenceRegex.Matches(GetText())
-                    select match.Value)
-                   .ToList();
+            var text = GetText() + '\0';
+            int? wordStart = null;
+            var words = new List<string>();
+            for (var i = 0; i < text.Length; i++)
+            {
+                var ch = text[i];
+                if (WordUtils.CanWordInclude(ch))
+                {
+                    if (wordStart == null)
+                        wordStart = i;
+                    continue;
+                }
+                if (wordStart != null)
+                {
+                    words.Add(text.Substring(wordStart.Value, i - wordStart.Value));
+                    wordStart = null;
+                }
+            }
+            return words;
         }
     }
 }
