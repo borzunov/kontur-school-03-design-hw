@@ -76,20 +76,6 @@ Yandex Mystem is used to find out grammar properties of the words. More info:
             return ImageFormats[imageExtension];
         }
 
-        static void Main(string[] args)
-        {
-            try
-            {
-                var options = OptionsFiller.Fill<Options>(Usage, args);
-
-                RunWithOptions(options);
-            }
-            catch (Exception e) when (e is ArgumentException || e is FormatException || e is IOException)
-            {
-                Console.WriteLine($"[-] Error: {e.Message}");
-            }
-        }
-
         public static void RunWithOptions(Options options)
         {
             var container = new StandardKernel();
@@ -136,9 +122,23 @@ Yandex Mystem is used to find out grammar properties of the words. More info:
                 });
 
             container.Get<CloudProcessor>().Process();
+        }
 
-            Console.WriteLine(
-                $"[+] Cloud saved to \"{options.OutputImage}\" ({options.Width}x{options.Height})");
+        static void Main(string[] args)
+        {
+            try
+            {
+                var options = OptionsFiller.Fill<Options>(Usage, args);
+
+                RunWithOptions(options);
+
+                Console.WriteLine(
+                    $"[+] Cloud saved to \"{options.OutputImage}\" ({options.Width}x{options.Height})");
+            }
+            catch (Exception e) when (e is ArgumentException || e is FormatException || e is IOException)
+            {
+                Console.WriteLine($"[-] Error: {e.Message}");
+            }
         }
     }
 }

@@ -82,6 +82,7 @@
     <Compile Include="CloudRenderers\BitmapRenderer.cs" />
     <Compile Include="GrammarInfo\MystemGrammarInfoParser_Tests.cs" />
     <Compile Include="OptionsFiller.cs" />
+    <Compile Include="Program_PerformanceTests.cs" />
     <Compile Include="WordsFilters\GrammarFormsJoiner_Tests.cs" />
     <Compile Include="WordsFilters\LengthFilter.cs" />
     <Compile Include="WordsFilters\LengthFilter_Tests.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="WordsSources\TextSources\TextSource.cs" />
     <Compile Include="WordsSources\TextSources\TextSource_Tests.cs" />
     <Compile Include="WordsSources\WordsListReader.cs" />
+    <Compile Include="WordsSources\WordUtils.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
