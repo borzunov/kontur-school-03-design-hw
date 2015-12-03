@@ -10,8 +10,8 @@ namespace TagCloudGenerator.CloudGenerators
         public readonly Color TextColor;
         readonly Random random;
 
-        public CenteredCloudGenerator(Color backgroundColor, Color textColor, string fontFamilyName, Size size,
-            Random random) : base(backgroundColor, size, fontFamilyName)
+        public CenteredCloudGenerator(Color backgroundColor, Color textColor, FontFamily fontFamily, Size size,
+            Random random) : base(backgroundColor, size, fontFamily)
         {
             TextColor = textColor;
             this.random = random;

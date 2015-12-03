@@ -20,7 +20,7 @@ namespace TagCloudGenerator
                 BgColor = Color.White,
                 TextColor = Color.Black,
                 Count = 100,
-                FontFamily = "Monospace",
+                FontFile = "Monospace",
                 Width = 400,
                 Height = 400,
                 MinLength = 3,

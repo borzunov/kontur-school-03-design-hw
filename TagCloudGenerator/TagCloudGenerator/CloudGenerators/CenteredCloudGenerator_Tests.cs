@@ -27,7 +27,7 @@ namespace TagCloudGenerator.CloudGenerators
         const int RandomSeed = 42;
 
         static readonly CenteredCloudGenerator GeneratorExample = new CenteredCloudGenerator(
-            Color.WhiteSmoke, Color.Gray, "Arial", new Size(200, 200), new Random(RandomSeed));
+            Color.WhiteSmoke, Color.Gray, FontFamily.GenericSansSerif, new Size(200, 200), new Random(RandomSeed));
 
         [Test]
         public void Generate_considersConstructorParameters()
@@ -39,7 +39,7 @@ namespace TagCloudGenerator.CloudGenerators
             scheme.BackgroundColor.Should().Be(GeneratorExample.BackgroundColor);
             scheme.WordViews.Should().OnlyContain(view => view.Color == GeneratorExample.TextColor);
             scheme.WordViews.Should().OnlyContain(
-                view => view.Font.FontFamily.Name == GeneratorExample.FontFamilyName);
+                view => view.Font.FontFamily.Name == GeneratorExample.FontFamily.Name);
             scheme.Size.Should().Be(GeneratorExample.Size);
         }
 

@@ -29,7 +29,7 @@ Options:
     --min-length=<value>     Minimal length of words that will be displayed [default: 3].
     --bg-color=<color>       Image background color (in HTML notation) [default: white].
     --text-color=<color>     Text color (in HTML notation) [default: green].
-    --font-family=<name>     Font family [default: Times New Roman].
+    --font-file=<name>       Font family file name [default: Fonts/BradobreiRegular.ttf].
     --width=<pixels>         Image width [default: 350].
     --height=<pixels>        Image height [default: 350].
 
@@ -51,7 +51,7 @@ Yandex Mystem is used to find out grammar properties of the words. More info:
 
             public Color BgColor { get; set; }
             public Color TextColor { get; set; }
-            public string FontFamily { get; set; }
+            public string FontFile { get; set; }
             public int Width { get; set; }
             public int Height { get; set; }
         }
@@ -101,11 +101,12 @@ Yandex Mystem is used to find out grammar properties of the words. More info:
                 .WithConstructorArgument("minLength", options.MinLength);
             container.Bind<MostCommonWordsFilter>().ToSelf()
                 .WithConstructorArgument("count", options.Count);
+            
+            container.Bind<FontFamily>().ToConstant(FontLoader.LoadFontFamily(options.FontFile));
 
             container.Bind<ICloudGenerator>().To<GravityCloudGenerator>()
                 .WithConstructorArgument("backgroundColor", options.BgColor)
                 .WithConstructorArgument("textColor", options.TextColor)
-                .WithConstructorArgument("fontFamilyName", options.FontFamily)
                 .WithConstructorArgument("size", new Size(options.Width, options.Height));
 
             container.Bind<ICloudRenderer>().To<BitmapRenderer>()

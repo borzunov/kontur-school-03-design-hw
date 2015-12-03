@@ -16,8 +16,8 @@ namespace TagCloudGenerator.CloudGenerators
         readonly PlaceMethod[] placeMethods;
         readonly PointF imageCenter;
 
-        public GravityCloudGenerator(Color backgroundColor, Color textColor, string fontFamilyName, Size size,
-            Random random) : base(backgroundColor, size, fontFamilyName)
+        public GravityCloudGenerator(Color backgroundColor, Color textColor, FontFamily fontFamily, Size size,
+            Random random) : base(backgroundColor, size, fontFamily)
         {
             TextColor = textColor;
             this.random = random;
@@ -165,7 +165,9 @@ namespace TagCloudGenerator.CloudGenerators
                 var font = GetFont(item.Value, minRate, maxRate);
                 var view = PlaceNextWord(item.Key, font, wordsViews);
                 if (view == null)
-                    throw new ArgumentException("Failed to place all words in an image of given size");
+                    throw new ArgumentException(
+                        "Failed to place all words in an image of given size " +
+                        "(you can increase --width and --height parameters or decrease --max-count)");
                 wordsViews.Add(view);
             }
 

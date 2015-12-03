@@ -8,13 +8,13 @@ namespace TagCloudGenerator.CloudGenerators
     {
         public readonly Color BackgroundColor;
         public readonly Size Size;
-        public readonly string FontFamilyName;
+        public readonly FontFamily FontFamily;
 
-        protected GraphicsCloudGeneratorBase(Color backgroundColor, Size size, string fontFamilyName)
+        protected GraphicsCloudGeneratorBase(Color backgroundColor, Size size, FontFamily fontFamily)
         {
             BackgroundColor = backgroundColor;
             Size = size;
-            FontFamilyName = fontFamilyName;
+            FontFamily = fontFamily;
         }
 
         static readonly Graphics FakeGraphics = Graphics.FromImage(new Bitmap(1, 1));
@@ -35,7 +35,7 @@ namespace TagCloudGenerator.CloudGenerators
             else
                 weightedRate = (double)(curRate - minRate) / (maxRate - minRate);
             var fontSize = MinFontEmSize + (int)Math.Round(weightedRate * (MaxFontEmSize - MinFontEmSize));
-            return new Font(FontFamilyName, fontSize, FontStyle.Bold);
+            return new Font(FontFamily, fontSize, FontStyle.Bold);
         }
 
         public abstract CloudScheme Generate(KeyValuePair<string, int>[] wordsRating);
