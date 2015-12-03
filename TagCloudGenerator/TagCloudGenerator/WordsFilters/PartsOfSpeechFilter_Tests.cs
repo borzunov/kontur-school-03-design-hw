@@ -3,6 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TagCloudGenerator.GrammarInfo;
+using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.WordsFilters
 {
@@ -12,10 +13,10 @@ namespace TagCloudGenerator.WordsFilters
         public void Filter_filtersByPartOfSpeech()
         {
             var filter = new PartsOfSpeechFilter();
-            var statistics = new Dictionary<string, int>
+            var statistics = new WordsStatistics(new Dictionary<string, int>
             {
                 {"работал", 10}, {"активное", 20}, {"существо", 30}
-            };
+            });
             var grammarInfo = new Dictionary<string, PartOfSpeech>
             {
                 {"работал", PartOfSpeech.Verb}, {"существо", PartOfSpeech.Noun}, {"активное", PartOfSpeech.Adjective}
@@ -23,7 +24,7 @@ namespace TagCloudGenerator.WordsFilters
 
             statistics = filter.Filter(statistics, grammarInfo);
 
-            statistics.Should().Equal(new Dictionary<string, int>
+            statistics.OccurrencesCounts.Should().Equal(new Dictionary<string, int>
             {
                 {"активное", 20}, {"существо", 30}
             });

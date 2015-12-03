@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.CloudGenerators
 {
@@ -51,18 +52,19 @@ namespace TagCloudGenerator.CloudGenerators
             return null;
         }
 
-        public override CloudScheme Generate(KeyValuePair<string, int>[] wordsRating)
+        public override CloudScheme Generate(WordsRating rating)
         {
-            if (wordsRating.Length == 0)
+            var wordsByOccurencesCount = rating.WordsByOccurencesCount;
+            if (wordsByOccurencesCount.Length == 0)
                 return new CloudScheme(Size, BackgroundColor, new List<WordView>());
 
-            var maxRate = wordsRating[0].Value;
-            var minRate = wordsRating[wordsRating.Length - 1].Value;
+            var maxRate = wordsByOccurencesCount[0].Value;
+            var minRate = wordsByOccurencesCount[wordsByOccurencesCount.Length - 1].Value;
 
             var firstWordFont = GetFont(maxRate, minRate, maxRate);
-            var wordsViews = new List<WordView> { PlaceFirstWord(wordsRating[0].Key, firstWordFont) };
+            var wordsViews = new List<WordView> { PlaceFirstWord(wordsByOccurencesCount[0].Key, firstWordFont) };
 
-            foreach (var item in wordsRating.Skip(1))
+            foreach (var item in wordsByOccurencesCount.Skip(1))
             {
                 var font = GetFont(item.Value, minRate, maxRate);
                 var view = PlaceNextWord(item.Key, font, wordsViews);

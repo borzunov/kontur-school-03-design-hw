@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using TagCloudGenerator.CloudGenerators;
 using TagCloudGenerator.CloudRenderers;
 using TagCloudGenerator.GrammarInfo;
 using TagCloudGenerator.WordsFilters;
 using TagCloudGenerator.WordsSources;
 
-namespace TagCloudGenerator
+namespace TagCloudGenerator.Processor
 {
     class CloudProcessor
     {
@@ -30,19 +29,14 @@ namespace TagCloudGenerator
         {
             var words = wordsSource.GetWords();
 
-            var statistics = words
-                .GroupBy(word => word)
-                .ToDictionary(group => group.Key, group => group.Count());
-            var grammarInfo = grammarInfoParser.GetGrammarInfo(statistics.Keys);
+            var statistics = new WordsStatistics(words);
+            var grammarInfo = grammarInfoParser.GetGrammarInfo(statistics.OccurrencesCounts.Keys);
             
             foreach (var filter in wordsFilters)
                 statistics = filter.Filter(statistics, grammarInfo);
 
-            var wordsRating = statistics
-                .OrderByDescending(item => item.Value)
-                .ToArray();
-
-            var cloudScheme = cloudGenerator.Generate(wordsRating);
+            var rating = new WordsRating(statistics);
+            var cloudScheme = cloudGenerator.Generate(rating);
             cloudRenderer.Render(cloudScheme);
         }
     }

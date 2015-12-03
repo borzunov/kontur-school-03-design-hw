@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using TagCloudGenerator.GrammarInfo;
+using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.WordsFilters
 {
     interface IWordsFilter
     {
-        Dictionary<string, int> Filter(IReadOnlyDictionary<string, int> statistics,
+        WordsStatistics Filter(WordsStatistics statistics,
             IReadOnlyDictionary<string, WordGrammarInfo> grammarInfo);
     }
 }

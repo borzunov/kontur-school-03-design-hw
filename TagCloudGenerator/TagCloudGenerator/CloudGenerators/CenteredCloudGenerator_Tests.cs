@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
+using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.CloudGenerators
 {
@@ -16,12 +17,14 @@ namespace TagCloudGenerator.CloudGenerators
             return new string(chars.ToArray());
         }
 
-        KeyValuePair<string, int>[] GenerateRating(Random random, int size)
+        WordsRating GenerateRating(Random random, int size)
         {
             var items = from i in Enumerable.Range(0, size)
                         select new KeyValuePair<string, int>(
                             GenerateWord(random, 5), random.Next(0, 100000));
-            return items.OrderByDescending(item => item.Value).ToArray();
+            return new WordsRating(items
+                .OrderByDescending(item => item.Value)
+                .ToArray());
         }
 
         const int RandomSeed = 42;
@@ -74,7 +77,7 @@ namespace TagCloudGenerator.CloudGenerators
 
             var scheme = GeneratorExample.Generate(rating);
 
-            var wordsFromRating = rating
+            var wordsFromRating = rating.WordsByOccurencesCount
                 .Select(item => item.Key)
                 .ToArray();
             var displayedWords = scheme.WordViews
@@ -91,7 +94,8 @@ namespace TagCloudGenerator.CloudGenerators
 
             var scheme = GeneratorExample.Generate(rating);
 
-            var wordsFromRating = rating.Select(item => item.Key);
+            var wordsFromRating = rating.WordsByOccurencesCount
+                .Select(item => item.Key);
             var displayedWords = scheme.WordViews.Select(view => view.Word);
             displayedWords.Should().BeEquivalentTo(wordsFromRating);
         }
@@ -103,14 +107,14 @@ namespace TagCloudGenerator.CloudGenerators
 
             var scheme = GeneratorExample.Generate(rating);
 
-            var wordsByPopularity = rating
+            var orderedWords = rating.WordsByOccurencesCount
                 .Select(item => item.Key)
                 .ToArray();
             var views = scheme.WordViews
                 .ToDictionary(view => view.Word, view => view);
             for (var i = 1; i < views.Count; i++)
-                views[wordsByPopularity[i - 1]].Font.Size.Should().BeGreaterOrEqualTo(
-                    views[wordsByPopularity[i]].Font.Size);
+                views[orderedWords[i - 1]].Font.Size.Should().BeGreaterOrEqualTo(
+                    views[orderedWords[i]].Font.Size);
         }
     }
 }

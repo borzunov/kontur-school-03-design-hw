@@ -1,27 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TagCloudGenerator.GrammarInfo;
+using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.WordsFilters
 {
     class GrammarFormsJoiner : IWordsFilter
     {
-        public Dictionary<string, int> Filter(IReadOnlyDictionary<string, int> statistics,
+        public WordsStatistics Filter(WordsStatistics statistics,
             IReadOnlyDictionary<string, WordGrammarInfo> grammarInfo)
         {
-            var wordsGroupedByInitialForm = statistics.Keys
+            var wordsGroupedByInitialForm = statistics.OccurrencesCounts.Keys
                 .Where(grammarInfo.ContainsKey)
                 .GroupBy(word => grammarInfo[word].InitialForm);
-            return wordsGroupedByInitialForm
+            return new WordsStatistics(wordsGroupedByInitialForm
                 .Select(wordForms => new
                 {
                     MostCommonForm = wordForms
-                        .OrderByDescending(form => statistics[form])
+                        .OrderByDescending(form => statistics.OccurrencesCounts[form])
                         .First(),
                     InitialForm = wordForms.Key,
-                    TotalCount = wordForms.Select(form => statistics[form]).Sum()
+                    TotalCount = wordForms.Select(form => statistics.OccurrencesCounts[form]).Sum()
                 })
-                .ToDictionary(item => item.MostCommonForm, item => item.TotalCount);
+                .ToDictionary(item => item.MostCommonForm, item => item.TotalCount));
         }
     }
 }

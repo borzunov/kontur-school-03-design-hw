@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.CloudGenerators
 {
@@ -38,6 +39,6 @@ namespace TagCloudGenerator.CloudGenerators
             return new Font(FontFamily, fontSize, FontStyle.Bold);
         }
 
-        public abstract CloudScheme Generate(KeyValuePair<string, int>[] wordsRating);
+        public abstract CloudScheme Generate(WordsRating rating);
     }
 }

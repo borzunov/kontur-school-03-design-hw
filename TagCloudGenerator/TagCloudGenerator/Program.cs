@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using Ninject;
 using TagCloudGenerator.CloudGenerators;
 using TagCloudGenerator.CloudRenderers;
 using TagCloudGenerator.GrammarInfo;
+using TagCloudGenerator.Processor;
 using TagCloudGenerator.WordsFilters;
 using TagCloudGenerator.WordsSources;
 using TagCloudGenerator.WordsSources.TextSources;

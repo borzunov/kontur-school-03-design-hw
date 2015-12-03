@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TagCloudGenerator.GrammarInfo;
+using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.WordsFilters
 {
@@ -12,13 +13,13 @@ namespace TagCloudGenerator.WordsFilters
             PartOfSpeech.Noun,
         };
 
-        public Dictionary<string, int> Filter(IReadOnlyDictionary<string, int> statistics,
+        public WordsStatistics Filter(WordsStatistics statistics,
             IReadOnlyDictionary<string, WordGrammarInfo> grammarInfo)
         {
-            return statistics
+            return new WordsStatistics(statistics.OccurrencesCounts
                 .Where(pair => grammarInfo.ContainsKey(pair.Key) &&
                                allowedPartsOfSpeech.Contains(grammarInfo[pair.Key].PartOfSpeech))
-                .ToDictionary(pair => pair.Key, pair => pair.Value);
+                .ToDictionary(pair => pair.Key, pair => pair.Value));
         }
     }
 }

@@ -2,6 +2,7 @@
 using FluentAssertions;
 using NUnit.Framework;
 using TagCloudGenerator.GrammarInfo;
+using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.WordsFilters
 {
@@ -11,10 +12,10 @@ namespace TagCloudGenerator.WordsFilters
         public void Filter_joinsGrammarForms()
         {
             var filter = new GrammarFormsJoiner();
-            var statistics = new Dictionary<string, int>
+            var statistics = new WordsStatistics(new Dictionary<string, int>
             {
                 {"активный", 10}, {"активное", 20}, {"команд", 40},
-            };
+            });
             var grammarInfo = new Dictionary<string, WordGrammarInfo>
             {
                 {"активный", new WordGrammarInfo("активный", PartOfSpeech.Adjective)},
@@ -24,21 +25,21 @@ namespace TagCloudGenerator.WordsFilters
 
             statistics = filter.Filter(statistics, grammarInfo);
 
-            statistics.Keys.Should().HaveCount(2)
+            statistics.OccurrencesCounts.Keys.Should().HaveCount(2)
                 .And.Contain(key => grammarInfo[key].InitialForm == "активный" &&
-                                    statistics[key] == 30)
+                                    statistics.OccurrencesCounts[key] == 30)
                 .And.Contain(key => grammarInfo[key].InitialForm == "команда" &&
-                                    statistics[key] == 40);
+                                    statistics.OccurrencesCounts[key] == 40);
         }
 
         [Test]
         public void Filter_selectsMostCommonForm()
         {
             var filter = new GrammarFormsJoiner();
-            var statistics = new Dictionary<string, int>
+            var statistics = new WordsStatistics(new Dictionary<string, int>
             {
                 {"активный", 10}, {"активное", 20}, {"команд", 40},
-            };
+            });
             var grammarInfo = new Dictionary<string, WordGrammarInfo>
             {
                 {"активный", new WordGrammarInfo("активный", PartOfSpeech.Adjective)},
@@ -48,7 +49,7 @@ namespace TagCloudGenerator.WordsFilters
 
             statistics = filter.Filter(statistics, grammarInfo);
             
-            statistics.Keys.Should().BeEquivalentTo("активное", "команд");
+            statistics.OccurrencesCounts.Keys.Should().BeEquivalentTo("активное", "команд");
         }
     }
 }

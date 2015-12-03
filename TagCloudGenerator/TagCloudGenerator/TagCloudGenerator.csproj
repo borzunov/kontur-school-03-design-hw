@@ -81,7 +81,9 @@
     <Compile Include="CloudGenerators\GravityCloudGenerator.cs" />
     <Compile Include="CloudGenerators\RandomExtensions.cs" />
     <Compile Include="CloudGenerators\WordView.cs" />
-    <Compile Include="CloudProcessor.cs" />
+    <Compile Include="Processor\CloudProcessor.cs" />
+    <Compile Include="Processor\WordsRating.cs" />
+    <Compile Include="Processor\WordsStatistics.cs" />
     <Compile Include="CloudRenderers\BitmapRenderer.cs" />
     <Compile Include="GrammarInfo\MystemGrammarInfoParser_Tests.cs" />
     <Compile Include="Options.cs" />
