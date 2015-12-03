@@ -11,16 +11,19 @@ namespace TagCloudGenerator.Processor
     {
         readonly IWordSource wordSource;
         readonly IGrammarInfoParser grammarInfoParser;
+        readonly GrammarFormJoiner grammarFormJoiner;
         readonly IWordFilter[] wordFilters;
         readonly int wordCount;
         readonly ICloudGenerator cloudGenerator;
         readonly ICloudRenderer cloudRenderer;
 
         public CloudProcessor(Options options, IWordSource wordSource, IGrammarInfoParser grammarInfoParser,
-            IWordFilter[] wordFilters, ICloudGenerator cloudGenerator, ICloudRenderer cloudRenderer)
+            GrammarFormJoiner grammarFormJoiner, IWordFilter[] wordFilters,
+            ICloudGenerator cloudGenerator, ICloudRenderer cloudRenderer)
         {
             this.wordSource = wordSource;
             this.grammarInfoParser = grammarInfoParser;
+            this.grammarFormJoiner = grammarFormJoiner;
             this.wordFilters = wordFilters;
             wordCount = options.Count;
             this.cloudGenerator = cloudGenerator;
@@ -33,6 +36,8 @@ namespace TagCloudGenerator.Processor
 
             var statistics = new WordStatistics(words);
             var grammarInfo = grammarInfoParser.GetGrammarInfo(statistics.OccurrenceCounts.Keys);
+
+            statistics = grammarFormJoiner.Join(statistics, grammarInfo);
             
             foreach (var filter in wordFilters)
                 statistics = filter.Filter(statistics, grammarInfo);

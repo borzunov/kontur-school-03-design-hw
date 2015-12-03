@@ -89,10 +89,10 @@
     <Compile Include="Options.cs" />
     <Compile Include="OptionsFiller.cs" />
     <Compile Include="Program_PerformanceTests.cs" />
-    <Compile Include="WordsFilters\GrammarFormJoiner_Tests.cs" />
+    <Compile Include="GrammarInfo\GrammarFormJoiner_Tests.cs" />
     <Compile Include="WordsFilters\LengthFilter.cs" />
     <Compile Include="WordsFilters\LengthFilter_Tests.cs" />
-    <Compile Include="WordsFilters\GrammarFormJoiner.cs" />
+    <Compile Include="GrammarInfo\GrammarFormJoiner.cs" />
     <Compile Include="WordsFilters\PartOfSpeechFilter_Tests.cs" />
     <Compile Include="WordsFilters\PartOfSpeechFilter.cs" />
     <Compile Include="GrammarInfo\IGrammarInfoParser.cs" />

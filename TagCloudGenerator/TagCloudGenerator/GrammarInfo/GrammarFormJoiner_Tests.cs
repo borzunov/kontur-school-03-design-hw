@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
-using TagCloudGenerator.GrammarInfo;
 using TagCloudGenerator.Processor;
 
-namespace TagCloudGenerator.WordsFilters
+namespace TagCloudGenerator.GrammarInfo
 {
     class GrammarFormJoiner_Tests
     {
         [Test]
-        public void Filter_joinsGrammarForms()
+        public void Join_mergesGrammarForms()
         {
             var filter = new GrammarFormJoiner();
             var statistics = new WordStatistics(new Dictionary<string, int>
@@ -23,7 +22,7 @@ namespace TagCloudGenerator.WordsFilters
                 {"команд", new WordGrammarInfo("команда", PartOfSpeech.Noun)},
             };
 
-            statistics = filter.Filter(statistics, grammarInfo);
+            statistics = filter.Join(statistics, grammarInfo);
 
             statistics.OccurrenceCounts.Keys.Should().HaveCount(2)
                 .And.Contain(key => grammarInfo[key].InitialForm == "активный" &&
@@ -33,7 +32,7 @@ namespace TagCloudGenerator.WordsFilters
         }
 
         [Test]
-        public void Filter_selectsMostCommonForm()
+        public void Join_selectsMostCommonForm()
         {
             var filter = new GrammarFormJoiner();
             var statistics = new WordStatistics(new Dictionary<string, int>
@@ -47,7 +46,7 @@ namespace TagCloudGenerator.WordsFilters
                 {"команд", new WordGrammarInfo("команда", PartOfSpeech.Noun)},
             };
 
-            statistics = filter.Filter(statistics, grammarInfo);
+            statistics = filter.Join(statistics, grammarInfo);
             
             statistics.OccurrenceCounts.Keys.Should().BeEquivalentTo("активное", "команд");
         }

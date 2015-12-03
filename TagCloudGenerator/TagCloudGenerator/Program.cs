@@ -38,7 +38,6 @@ namespace TagCloudGenerator
                 .WithConstructorArgument("wordFilters", new IWordFilter[]
                 {
                     container.Get<PartOfSpeechFilter>(),
-                    container.Get<GrammarFormJoiner>(),
                     container.Get<LengthFilter>(),
                 });
 

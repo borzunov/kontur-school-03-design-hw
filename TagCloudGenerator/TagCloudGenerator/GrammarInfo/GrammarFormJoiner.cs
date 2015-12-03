@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using TagCloudGenerator.GrammarInfo;
 using TagCloudGenerator.Processor;
 
-namespace TagCloudGenerator.WordsFilters
+namespace TagCloudGenerator.GrammarInfo
 {
-    class GrammarFormJoiner : IWordFilter
+    class GrammarFormJoiner
     {
-        public WordStatistics Filter(WordStatistics statistics,
+        public WordStatistics Join(WordStatistics statistics,
             IReadOnlyDictionary<string, WordGrammarInfo> grammarInfo)
         {
             var wordsGroupedByInitialForm = statistics.OccurrenceCounts.Keys
