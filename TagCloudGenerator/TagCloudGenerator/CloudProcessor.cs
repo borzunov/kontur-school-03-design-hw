@@ -26,31 +26,21 @@ namespace TagCloudGenerator
             this.cloudRenderer = cloudRenderer;
         }
 
-        public static Dictionary<string, int> MakeStatistics(IEnumerable<string> words)
-        {
-            return words
-                .GroupBy(word => word)
-                .ToDictionary(group => group.Key, group => group.Count());
-        }
-
-        public static KeyValuePair<string, int>[] MakeWordsRating(Dictionary<string, int> statistics)
-        {
-            return statistics
-                .OrderByDescending(item => item.Value)
-                .ToArray();
-        } 
-
         public void Process()
         {
             var words = wordsSource.GetWords();
 
-            var statistics = MakeStatistics(words);
+            var statistics = words
+                .GroupBy(word => word)
+                .ToDictionary(group => group.Key, group => group.Count());
             var grammarInfo = grammarInfoParser.GetGrammarInfo(statistics.Keys);
             
             foreach (var filter in wordsFilters)
                 statistics = filter.Filter(statistics, grammarInfo);
 
-            var wordsRating = MakeWordsRating(statistics);
+            var wordsRating = statistics
+                .OrderByDescending(item => item.Value)
+                .ToArray();
 
             var cloudScheme = cloudGenerator.Generate(wordsRating);
             cloudRenderer.Render(cloudScheme);
