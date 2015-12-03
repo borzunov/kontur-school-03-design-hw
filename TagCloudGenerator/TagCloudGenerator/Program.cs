@@ -28,18 +28,14 @@ namespace TagCloudGenerator
                 throw new ArgumentException("You should specify either --word-list or --text");
 
             container.Bind<IGrammarInfoParser>().To<MystemGrammarInfoParser>();
+
+            container.Bind<IWordFilter>().To<PartOfSpeechFilter>();
+            container.Bind<IWordFilter>().To<LengthFilter>();
             
             container.Bind<FontFamily>().ToConstant(FontLoader.LoadFontFamily(options.FontFile));
 
             container.Bind<ICloudGenerator>().To<GravityCloudGenerator>();
             container.Bind<ICloudRenderer>().To<BitmapRenderer>();
-
-            container.Bind<CloudProcessor>().ToSelf()
-                .WithConstructorArgument("wordFilters", new IWordFilter[]
-                {
-                    container.Get<PartOfSpeechFilter>(),
-                    container.Get<LengthFilter>(),
-                });
 
             container.Get<CloudProcessor>().Process();
         }
