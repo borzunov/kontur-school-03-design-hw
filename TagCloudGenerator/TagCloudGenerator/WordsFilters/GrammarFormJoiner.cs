@@ -5,22 +5,22 @@ using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.WordsFilters
 {
-    class GrammarFormsJoiner : IWordsFilter
+    class GrammarFormJoiner : IWordFilter
     {
-        public WordsStatistics Filter(WordsStatistics statistics,
+        public WordStatistics Filter(WordStatistics statistics,
             IReadOnlyDictionary<string, WordGrammarInfo> grammarInfo)
         {
-            var wordsGroupedByInitialForm = statistics.OccurrencesCounts.Keys
+            var wordsGroupedByInitialForm = statistics.OccurrenceCounts.Keys
                 .Where(grammarInfo.ContainsKey)
                 .GroupBy(word => grammarInfo[word].InitialForm);
-            return new WordsStatistics(wordsGroupedByInitialForm
+            return new WordStatistics(wordsGroupedByInitialForm
                 .Select(wordForms => new
                 {
                     MostCommonForm = wordForms
-                        .OrderByDescending(form => statistics.OccurrencesCounts[form])
+                        .OrderByDescending(form => statistics.OccurrenceCounts[form])
                         .First(),
                     InitialForm = wordForms.Key,
-                    TotalCount = wordForms.Select(form => statistics.OccurrencesCounts[form]).Sum()
+                    TotalCount = wordForms.Select(form => statistics.OccurrenceCounts[form]).Sum()
                 })
                 .ToDictionary(item => item.MostCommonForm, item => item.TotalCount));
         }

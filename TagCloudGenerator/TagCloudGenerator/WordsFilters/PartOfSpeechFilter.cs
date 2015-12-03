@@ -5,7 +5,7 @@ using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.WordsFilters
 {
-    class PartsOfSpeechFilter : IWordsFilter
+    class PartOfSpeechFilter : IWordFilter
     {
         readonly HashSet<PartOfSpeech> allowedPartsOfSpeech = new HashSet<PartOfSpeech>
         {
@@ -13,10 +13,10 @@ namespace TagCloudGenerator.WordsFilters
             PartOfSpeech.Noun,
         };
 
-        public WordsStatistics Filter(WordsStatistics statistics,
+        public WordStatistics Filter(WordStatistics statistics,
             IReadOnlyDictionary<string, WordGrammarInfo> grammarInfo)
         {
-            return new WordsStatistics(statistics.OccurrencesCounts
+            return new WordStatistics(statistics.OccurrenceCounts
                 .Where(pair => grammarInfo.ContainsKey(pair.Key) &&
                                allowedPartsOfSpeech.Contains(grammarInfo[pair.Key].PartOfSpeech))
                 .ToDictionary(pair => pair.Key, pair => pair.Value));

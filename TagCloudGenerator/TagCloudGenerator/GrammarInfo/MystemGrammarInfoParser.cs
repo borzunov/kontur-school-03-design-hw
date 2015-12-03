@@ -94,10 +94,10 @@ namespace TagCloudGenerator.GrammarInfo
 
         public Dictionary<string, WordGrammarInfo> GetGrammarInfo(IEnumerable<string> words)
         {
-            var wordsList = words
+            var wordList = words
                 .Where(word => !word.Contains('\''))
                 .ToList();
-            var parsedOutput = CommunicateWithProcess(wordsList)
+            var parsedOutput = CommunicateWithProcess(wordList)
                 .Select(ParseOutputLine)
                 .Where(parsed => parsed != null);
 

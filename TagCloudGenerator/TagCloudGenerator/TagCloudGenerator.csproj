@@ -82,28 +82,28 @@
     <Compile Include="CloudGenerators\RandomExtensions.cs" />
     <Compile Include="CloudGenerators\WordView.cs" />
     <Compile Include="Processor\CloudProcessor.cs" />
-    <Compile Include="Processor\WordsRating.cs" />
-    <Compile Include="Processor\WordsStatistics.cs" />
+    <Compile Include="Processor\WordRating.cs" />
+    <Compile Include="Processor\WordStatistics.cs" />
     <Compile Include="CloudRenderers\BitmapRenderer.cs" />
     <Compile Include="GrammarInfo\MystemGrammarInfoParser_Tests.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="OptionsFiller.cs" />
     <Compile Include="Program_PerformanceTests.cs" />
-    <Compile Include="WordsFilters\GrammarFormsJoiner_Tests.cs" />
+    <Compile Include="WordsFilters\GrammarFormJoiner_Tests.cs" />
     <Compile Include="WordsFilters\LengthFilter.cs" />
     <Compile Include="WordsFilters\LengthFilter_Tests.cs" />
-    <Compile Include="WordsFilters\MostCommonWordsFilter.cs" />
-    <Compile Include="WordsFilters\GrammarFormsJoiner.cs" />
-    <Compile Include="WordsFilters\MostCommonWordsFilter_Tests.cs" />
-    <Compile Include="WordsFilters\PartsOfSpeechFilter_Tests.cs" />
-    <Compile Include="WordsFilters\PartsOfSpeechFilter.cs" />
+    <Compile Include="WordsFilters\MostCommonWordFilter.cs" />
+    <Compile Include="WordsFilters\GrammarFormJoiner.cs" />
+    <Compile Include="WordsFilters\MostCommonWordFilter_Tests.cs" />
+    <Compile Include="WordsFilters\PartOfSpeechFilter_Tests.cs" />
+    <Compile Include="WordsFilters\PartOfSpeechFilter.cs" />
     <Compile Include="GrammarInfo\IGrammarInfoParser.cs" />
     <Compile Include="GrammarInfo\MystemGrammarInfoParser.cs" />
     <Compile Include="GrammarInfo\PartOfSpeech.cs" />
     <Compile Include="GrammarInfo\WordGrammarInfo.cs" />
     <Compile Include="CloudGenerators\ICloudGenerator.cs" />
     <Compile Include="CloudRenderers\ICloudRenderer.cs" />
-    <Compile Include="WordsFilters\IWordsFilter.cs" />
+    <Compile Include="WordsFilters\IWordFilter.cs" />
     <Compile Include="WordsSources\IWordsSource.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -142,7 +142,7 @@
     <Content Include="Examples\WarAndPeace_Part1.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Examples\WordsList.txt">
+    <Content Include="Examples\WordList.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="mystem.exe">

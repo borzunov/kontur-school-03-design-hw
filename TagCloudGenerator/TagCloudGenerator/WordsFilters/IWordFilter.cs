@@ -4,9 +4,9 @@ using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.WordsFilters
 {
-    interface IWordsFilter
+    interface IWordFilter
     {
-        WordsStatistics Filter(WordsStatistics statistics,
+        WordStatistics Filter(WordStatistics statistics,
             IReadOnlyDictionary<string, WordGrammarInfo> grammarInfo);
     }
 }

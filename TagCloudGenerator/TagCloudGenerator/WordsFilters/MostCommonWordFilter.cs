@@ -5,19 +5,19 @@ using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.WordsFilters
 {
-    class MostCommonWordsFilter : IWordsFilter
+    class MostCommonWordFilter : IWordFilter
     {
         readonly int count;
 
-        public MostCommonWordsFilter(Options options)
+        public MostCommonWordFilter(Options options)
         {
             count = options.Count;
         }
 
-        public WordsStatistics Filter(WordsStatistics statistics,
+        public WordStatistics Filter(WordStatistics statistics,
             IReadOnlyDictionary<string, WordGrammarInfo> grammarInfo)
         {
-            return new WordsStatistics(statistics.OccurrencesCounts
+            return new WordStatistics(statistics.OccurrenceCounts
                 .OrderByDescending(pair => pair.Value)
                 .Take(count)
                 .ToDictionary(pair => pair.Key, pair => pair.Value));

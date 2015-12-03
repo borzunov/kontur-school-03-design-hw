@@ -39,6 +39,6 @@ namespace TagCloudGenerator.CloudGenerators
             return new Font(FontFamily, fontSize, FontStyle.Bold);
         }
 
-        public abstract CloudScheme Generate(WordsRating rating);
+        public abstract CloudScheme Generate(WordRating rating);
     }
 }

@@ -7,13 +7,13 @@ using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.WordsFilters
 {
-    class PartsOfSpeechFilter_Tests
+    class PartOfSpeechFilter_Tests
     {
         [Test]
         public void Filter_filtersByPartOfSpeech()
         {
-            var filter = new PartsOfSpeechFilter();
-            var statistics = new WordsStatistics(new Dictionary<string, int>
+            var filter = new PartOfSpeechFilter();
+            var statistics = new WordStatistics(new Dictionary<string, int>
             {
                 {"работал", 10}, {"активное", 20}, {"существо", 30}
             });
@@ -24,7 +24,7 @@ namespace TagCloudGenerator.WordsFilters
 
             statistics = filter.Filter(statistics, grammarInfo);
 
-            statistics.OccurrencesCounts.Should().Equal(new Dictionary<string, int>
+            statistics.OccurrenceCounts.Should().Equal(new Dictionary<string, int>
             {
                 {"активное", 20}, {"существо", 30}
             });

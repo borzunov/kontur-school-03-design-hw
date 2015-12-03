@@ -14,14 +14,14 @@ namespace TagCloudGenerator.WordsFilters
             {
                 MinLength = 3
             });
-            var statistics = new WordsStatistics(new Dictionary<string, int>
+            var statistics = new WordStatistics(new Dictionary<string, int>
             {
                 {"в", 80}, {"на", 230}, {"как", 50}, {"активное", 20}, {"хитрость", 40}
             });
 
             statistics = filter.Filter(statistics, null);
 
-            statistics.OccurrencesCounts.Should().Equal(new Dictionary<string, int>
+            statistics.OccurrenceCounts.Should().Equal(new Dictionary<string, int>
             {
                 {"как", 50}, {"активное", 20}, {"хитрость", 40}
             });

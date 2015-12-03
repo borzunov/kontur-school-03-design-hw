@@ -152,20 +152,20 @@ namespace TagCloudGenerator.CloudGenerators
             return bestView;
         }
 
-        public override CloudScheme Generate(WordsRating rating)
+        public override CloudScheme Generate(WordRating rating)
         {
-            var wordsByOccurencesCount = rating.WordsByOccurencesCount;
-            if (wordsByOccurencesCount.Length == 0)
+            var wordsByOccurenceCount = rating.WordsByOccurenceCount;
+            if (wordsByOccurenceCount.Length == 0)
                 return new CloudScheme(Size, BackgroundColor, new List<WordView>());
 
-            var maxRate = wordsByOccurencesCount[0].Value;
-            var minRate = wordsByOccurencesCount[wordsByOccurencesCount.Length - 1].Value;
-            wordsByOccurencesCount = random.Shuffle(wordsByOccurencesCount);
+            var maxRate = wordsByOccurenceCount[0].Value;
+            var minRate = wordsByOccurenceCount[wordsByOccurenceCount.Length - 1].Value;
+            wordsByOccurenceCount = random.Shuffle(wordsByOccurenceCount);
             
-            var firstWordFont = GetFont(wordsByOccurencesCount[0].Value, minRate, maxRate);
-            var wordsViews = new List<WordView> { PlaceFirstWord(wordsByOccurencesCount[0].Key, firstWordFont) };
+            var firstWordFont = GetFont(wordsByOccurenceCount[0].Value, minRate, maxRate);
+            var wordsViews = new List<WordView> { PlaceFirstWord(wordsByOccurenceCount[0].Key, firstWordFont) };
 
-            foreach (var item in wordsByOccurencesCount.Skip(1))
+            foreach (var item in wordsByOccurenceCount.Skip(1))
             {
                 var font = GetFont(item.Value, minRate, maxRate);
                 var view = PlaceNextWord(item.Key, font, wordsViews);

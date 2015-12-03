@@ -11,7 +11,7 @@ namespace TagCloudGenerator.WordsSources
 
         public WordsListReader(Options options)
         {
-            filename = options.WordsList;
+            filename = options.WordList;
         }
 
         public List<string> GetWords()

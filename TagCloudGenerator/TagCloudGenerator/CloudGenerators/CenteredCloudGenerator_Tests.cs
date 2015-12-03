@@ -17,12 +17,12 @@ namespace TagCloudGenerator.CloudGenerators
             return new string(chars.ToArray());
         }
 
-        WordsRating GenerateRating(Random random, int size)
+        WordRating GenerateRating(Random random, int size)
         {
             var items = from i in Enumerable.Range(0, size)
                         select new KeyValuePair<string, int>(
                             GenerateWord(random, 5), random.Next(0, 100000));
-            return new WordsRating(items
+            return new WordRating(items
                 .OrderByDescending(item => item.Value)
                 .ToArray());
         }
@@ -77,7 +77,7 @@ namespace TagCloudGenerator.CloudGenerators
 
             var scheme = GeneratorExample.Generate(rating);
 
-            var wordsFromRating = rating.WordsByOccurencesCount
+            var wordsFromRating = rating.WordsByOccurenceCount
                 .Select(item => item.Key)
                 .ToArray();
             var displayedWords = scheme.WordViews
@@ -94,7 +94,7 @@ namespace TagCloudGenerator.CloudGenerators
 
             var scheme = GeneratorExample.Generate(rating);
 
-            var wordsFromRating = rating.WordsByOccurencesCount
+            var wordsFromRating = rating.WordsByOccurenceCount
                 .Select(item => item.Key);
             var displayedWords = scheme.WordViews.Select(view => view.Word);
             displayedWords.Should().BeEquivalentTo(wordsFromRating);
@@ -107,7 +107,7 @@ namespace TagCloudGenerator.CloudGenerators
 
             var scheme = GeneratorExample.Generate(rating);
 
-            var orderedWords = rating.WordsByOccurencesCount
+            var orderedWords = rating.WordsByOccurenceCount
                 .Select(item => item.Key)
                 .ToArray();
             var views = scheme.WordViews

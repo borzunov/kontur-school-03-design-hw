@@ -5,7 +5,7 @@ using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.WordsFilters
 {
-    class LengthFilter : IWordsFilter
+    class LengthFilter : IWordFilter
     {
         readonly int minLength;
 
@@ -14,10 +14,10 @@ namespace TagCloudGenerator.WordsFilters
             minLength = options.MinLength;
         }
 
-        public WordsStatistics Filter(WordsStatistics statistics,
+        public WordStatistics Filter(WordStatistics statistics,
             IReadOnlyDictionary<string, WordGrammarInfo> grammarInfo)
         {
-            return new WordsStatistics(statistics.OccurrencesCounts
+            return new WordStatistics(statistics.OccurrenceCounts
                 .Where(pair => pair.Key.Length >= minLength)
                 .ToDictionary(pair => pair.Key, pair => pair.Value));
         }

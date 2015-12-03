@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace TagCloudGenerator.Processor
 {
-    class WordsStatistics
+    class WordStatistics
     {
-        public readonly Dictionary<string, int> OccurrencesCounts;
+        public readonly Dictionary<string, int> OccurrenceCounts;
 
-        public WordsStatistics(IEnumerable<string> words)
+        public WordStatistics(IEnumerable<string> words)
         {
-            OccurrencesCounts = words
+            OccurrenceCounts = words
                 .GroupBy(word => word)
                 .ToDictionary(group => group.Key, group => group.Count());
         }
 
-        public WordsStatistics(Dictionary<string, int> occurrencesCounts)
+        public WordStatistics(Dictionary<string, int> occurrenceCounts)
         {
-            OccurrencesCounts = occurrencesCounts;
+            OccurrenceCounts = occurrenceCounts;
         }
     }
 }

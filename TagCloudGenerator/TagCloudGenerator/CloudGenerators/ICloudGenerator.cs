@@ -6,6 +6,6 @@ namespace TagCloudGenerator.CloudGenerators
 {
     interface ICloudGenerator
     {
-        CloudScheme Generate(WordsRating rating);
+        CloudScheme Generate(WordRating rating);
     }
 }

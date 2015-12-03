@@ -6,13 +6,13 @@ using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.WordsFilters
 {
-    class GrammarFormsJoiner_Tests
+    class GrammarFormJoiner_Tests
     {
         [Test]
         public void Filter_joinsGrammarForms()
         {
-            var filter = new GrammarFormsJoiner();
-            var statistics = new WordsStatistics(new Dictionary<string, int>
+            var filter = new GrammarFormJoiner();
+            var statistics = new WordStatistics(new Dictionary<string, int>
             {
                 {"активный", 10}, {"активное", 20}, {"команд", 40},
             });
@@ -25,18 +25,18 @@ namespace TagCloudGenerator.WordsFilters
 
             statistics = filter.Filter(statistics, grammarInfo);
 
-            statistics.OccurrencesCounts.Keys.Should().HaveCount(2)
+            statistics.OccurrenceCounts.Keys.Should().HaveCount(2)
                 .And.Contain(key => grammarInfo[key].InitialForm == "активный" &&
-                                    statistics.OccurrencesCounts[key] == 30)
+                                    statistics.OccurrenceCounts[key] == 30)
                 .And.Contain(key => grammarInfo[key].InitialForm == "команда" &&
-                                    statistics.OccurrencesCounts[key] == 40);
+                                    statistics.OccurrenceCounts[key] == 40);
         }
 
         [Test]
         public void Filter_selectsMostCommonForm()
         {
-            var filter = new GrammarFormsJoiner();
-            var statistics = new WordsStatistics(new Dictionary<string, int>
+            var filter = new GrammarFormJoiner();
+            var statistics = new WordStatistics(new Dictionary<string, int>
             {
                 {"активный", 10}, {"активное", 20}, {"команд", 40},
             });
@@ -49,7 +49,7 @@ namespace TagCloudGenerator.WordsFilters
 
             statistics = filter.Filter(statistics, grammarInfo);
             
-            statistics.OccurrencesCounts.Keys.Should().BeEquivalentTo("активное", "команд");
+            statistics.OccurrenceCounts.Keys.Should().BeEquivalentTo("активное", "команд");
         }
     }
 }
