@@ -21,9 +21,9 @@ namespace TagCloudGenerator
             container.Bind<Options>().ToConstant(options);
 
             if (options.WordList != null)
-                container.Bind<IWordsSource>().To<WordsListReader>();
+                container.Bind<IWordSource>().To<WordListReader>();
             else if (options.TextDocument != null)
-                container.Bind<IWordsSource>().To<TextDocumentReader>();
+                container.Bind<IWordSource>().To<TextDocumentReader>();
             else
                 throw new ArgumentException("You should specify either --word-list or --text");
 
@@ -40,7 +40,6 @@ namespace TagCloudGenerator
                     container.Get<PartOfSpeechFilter>(),
                     container.Get<GrammarFormJoiner>(),
                     container.Get<LengthFilter>(),
-                    container.Get<MostCommonWordFilter>(),
                 });
 
             container.Get<CloudProcessor>().Process();

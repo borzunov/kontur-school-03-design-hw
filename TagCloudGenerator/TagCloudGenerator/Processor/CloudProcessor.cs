@@ -9,25 +9,27 @@ namespace TagCloudGenerator.Processor
 {
     class CloudProcessor
     {
-        readonly IWordsSource wordsSource;
+        readonly IWordSource wordSource;
         readonly IGrammarInfoParser grammarInfoParser;
         readonly IWordFilter[] wordFilters;
+        readonly int wordCount;
         readonly ICloudGenerator cloudGenerator;
         readonly ICloudRenderer cloudRenderer;
 
-        public CloudProcessor(IWordsSource wordsSource, IGrammarInfoParser grammarInfoParser,
+        public CloudProcessor(Options options, IWordSource wordSource, IGrammarInfoParser grammarInfoParser,
             IWordFilter[] wordFilters, ICloudGenerator cloudGenerator, ICloudRenderer cloudRenderer)
         {
-            this.wordsSource = wordsSource;
+            this.wordSource = wordSource;
             this.grammarInfoParser = grammarInfoParser;
             this.wordFilters = wordFilters;
+            wordCount = options.Count;
             this.cloudGenerator = cloudGenerator;
             this.cloudRenderer = cloudRenderer;
         }
 
         public void Process()
         {
-            var words = wordsSource.GetWords();
+            var words = wordSource.GetWords();
 
             var statistics = new WordStatistics(words);
             var grammarInfo = grammarInfoParser.GetGrammarInfo(statistics.OccurrenceCounts.Keys);
@@ -35,7 +37,7 @@ namespace TagCloudGenerator.Processor
             foreach (var filter in wordFilters)
                 statistics = filter.Filter(statistics, grammarInfo);
 
-            var rating = new WordRating(statistics);
+            var rating = new WordRating(statistics, wordCount);
             var cloudScheme = cloudGenerator.Generate(rating);
             cloudRenderer.Render(cloudScheme);
         }

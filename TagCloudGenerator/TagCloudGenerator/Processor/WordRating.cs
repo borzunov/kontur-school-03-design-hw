@@ -15,10 +15,11 @@ namespace TagCloudGenerator.Processor
             WordsByOccurenceCount = wordsByOccurenceCount;
         }
 
-        public WordRating(WordStatistics statistics)
+        public WordRating(WordStatistics statistics, int wordCount)
         {
             WordsByOccurenceCount = statistics.OccurrenceCounts
                 .OrderByDescending(item => item.Value)
+                .Take(wordCount)
                 .ToArray();
         }
     }

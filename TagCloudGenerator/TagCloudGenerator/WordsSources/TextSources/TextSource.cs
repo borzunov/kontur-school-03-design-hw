@@ -2,7 +2,7 @@
 
 namespace TagCloudGenerator.WordsSources.TextSources
 {
-    public abstract class TextSource : IWordsSource
+    public abstract class TextSource : IWordSource
     {
         public abstract string GetText();
 

@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace TagCloudGenerator.WordsSources
 {
-    class WordsListReader : IWordsSource
+    class WordListReader : IWordSource
     {
         readonly string filename;
 
-        public WordsListReader(Options options)
+        public WordListReader(Options options)
         {
             filename = options.WordList;
         }

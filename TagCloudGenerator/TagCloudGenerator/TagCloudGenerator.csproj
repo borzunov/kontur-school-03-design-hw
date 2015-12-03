@@ -92,9 +92,7 @@
     <Compile Include="WordsFilters\GrammarFormJoiner_Tests.cs" />
     <Compile Include="WordsFilters\LengthFilter.cs" />
     <Compile Include="WordsFilters\LengthFilter_Tests.cs" />
-    <Compile Include="WordsFilters\MostCommonWordFilter.cs" />
     <Compile Include="WordsFilters\GrammarFormJoiner.cs" />
-    <Compile Include="WordsFilters\MostCommonWordFilter_Tests.cs" />
     <Compile Include="WordsFilters\PartOfSpeechFilter_Tests.cs" />
     <Compile Include="WordsFilters\PartOfSpeechFilter.cs" />
     <Compile Include="GrammarInfo\IGrammarInfoParser.cs" />
@@ -104,13 +102,13 @@
     <Compile Include="CloudGenerators\ICloudGenerator.cs" />
     <Compile Include="CloudRenderers\ICloudRenderer.cs" />
     <Compile Include="WordsFilters\IWordFilter.cs" />
-    <Compile Include="WordsSources\IWordsSource.cs" />
+    <Compile Include="WordsSources\IWordSource.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WordsSources\TextSources\TextDocumentReader.cs" />
     <Compile Include="WordsSources\TextSources\TextSource.cs" />
     <Compile Include="WordsSources\TextSources\TextSource_Tests.cs" />
-    <Compile Include="WordsSources\WordsListReader.cs" />
+    <Compile Include="WordsSources\WordListReader.cs" />
     <Compile Include="WordsSources\WordUtils.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
