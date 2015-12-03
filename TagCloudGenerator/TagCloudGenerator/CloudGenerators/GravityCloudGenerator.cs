@@ -7,19 +7,16 @@ namespace TagCloudGenerator.CloudGenerators
 {
     class GravityCloudGenerator : GraphicsCloudGeneratorBase
     {
-        public readonly Color TextColor;
         readonly Random random;
 
-        delegate WordView PlaceMethod(string word, Size wordSize, Font font,
-            IReadOnlyList<WordView> alreadyPlacedWords);
+        delegate Point? PlaceMethod(Size wordSize, IReadOnlyList<WordView> alreadyPlacedWords);
 
         readonly PlaceMethod[] placeMethods;
         readonly PointF imageCenter;
 
-        public GravityCloudGenerator(Color backgroundColor, Color textColor, FontFamily fontFamily, Size size,
+        public GravityCloudGenerator(Color backgroundColor, FontFamily fontFamily, Size size,
             Random random) : base(backgroundColor, size, fontFamily)
         {
-            TextColor = textColor;
             this.random = random;
 
             placeMethods = new PlaceMethod[]
@@ -30,6 +27,13 @@ namespace TagCloudGenerator.CloudGenerators
             imageCenter = new PointF(size.Width / 2.0f, size.Height / 2.0f);
         }
 
+        const int MaxColorValue = 128;
+
+        Color GenerateColor()
+        {
+            return Color.FromArgb(random.Next(MaxColorValue), random.Next(MaxColorValue), random.Next(MaxColorValue));
+        }
+
         WordView PlaceFirstWord(string word, Font font)
         {
             var wordSize = MeasureString(word, font);
@@ -37,7 +41,7 @@ namespace TagCloudGenerator.CloudGenerators
                 (Size.Width - wordSize.Width) / 2,
                 (Size.Height - wordSize.Height) / 2
             );
-            return new WordView(word, font, TextColor, position, wordSize);
+            return new WordView(word, font, GenerateColor(), position, wordSize);
         }
 
         static bool AreSegmentsIntersect(int l1, int r1, int l2, int r2)
@@ -61,30 +65,30 @@ namespace TagCloudGenerator.CloudGenerators
             return Tuple.Create(positionY, wordsOnStripe);
         }
 
-        WordView PlaceWordOnTheLeft(string word, Size wordSize, Font font,
-            IReadOnlyList<WordView> alreadyPlacedWords)
+        const int PlacingMargin = 3;
+
+        Point? PlaceWordOnTheLeft(Size wordSize, IReadOnlyList<WordView> alreadyPlacedWords)
         {
             var stripe = GetHorizontalStripe(wordSize, alreadyPlacedWords);
 
             var minUsedXInStripe = stripe.Item2.Min(view => view.Position.X);
-            var positionX = minUsedXInStripe - wordSize.Width;
+            var positionX = minUsedXInStripe - wordSize.Width - PlacingMargin;
             if (positionX < 0)
                 return null;
 
-            return new WordView(word, font, TextColor, new Point(positionX, stripe.Item1), wordSize);
+            return new Point(positionX, stripe.Item1);
         }
 
-        WordView PlaceWordOnTheRight(string word, Size wordSize, Font font,
-            IReadOnlyList<WordView> alreadyPlacedWords)
+        Point? PlaceWordOnTheRight(Size wordSize, IReadOnlyList<WordView> alreadyPlacedWords)
         {
             var stripe = GetHorizontalStripe(wordSize, alreadyPlacedWords);
 
             var maxUsedXInStripe = stripe.Item2.Max(view => view.Position.X + view.Size.Width);
-            var positionX = maxUsedXInStripe;
+            var positionX = maxUsedXInStripe + PlacingMargin;
             if (positionX + wordSize.Width >= Size.Height)
                 return null;
 
-            return new WordView(word, font, TextColor, new Point(positionX, stripe.Item1), wordSize);
+            return new Point(positionX, stripe.Item1);
         }
 
         WordView SwapViewCoordinates(WordView view)
@@ -93,22 +97,20 @@ namespace TagCloudGenerator.CloudGenerators
                 new Point(view.Position.Y, view.Position.X), new Size(view.Size.Height, view.Size.Width));
         }
         
-        WordView PlaceWordOnTheTop(string word, Size wordSize, Font font,
-            IReadOnlyList<WordView> alreadyPlacedWords)
+        Point? PlaceWordOnTheTop(Size wordSize, IReadOnlyList<WordView> alreadyPlacedWords)
         {
             var swappedSize = new Size(wordSize.Height, wordSize.Width);
-            var swappedView = PlaceWordOnTheLeft(word, swappedSize, font,
+            var swappedPoint = PlaceWordOnTheLeft(swappedSize,
                 alreadyPlacedWords.Select(SwapViewCoordinates).ToList());
-            return swappedView != null ? SwapViewCoordinates(swappedView) : null;
+            return swappedPoint != null ? (Point?) new Point(swappedPoint.Value.Y, swappedPoint.Value.X) : null;
         }
         
-        WordView PlaceWordOnTheBottom(string word, Size wordSize, Font font,
-            IReadOnlyList<WordView> alreadyPlacedWords)
+        Point? PlaceWordOnTheBottom(Size wordSize, IReadOnlyList<WordView> alreadyPlacedWords)
         {
             var swappedSize = new Size(wordSize.Height, wordSize.Width);
-            var swappedView = PlaceWordOnTheRight(word, swappedSize, font,
+            var swappedPoint = PlaceWordOnTheRight(swappedSize,
                 alreadyPlacedWords.Select(SwapViewCoordinates).ToList());
-            return swappedView != null ? SwapViewCoordinates(swappedView) : null;
+            return swappedPoint != null ? (Point?)new Point(swappedPoint.Value.Y, swappedPoint.Value.X) : null;
         }
 
         static PointF GetViewCenter(WordView view)
@@ -134,9 +136,10 @@ namespace TagCloudGenerator.CloudGenerators
             for (var i = 0; i < triesCount; i++)
             {
                 var placeMethod = placeMethods[random.Next(placeMethods.Length)];
-                var view = placeMethod(word, wordSize, font, alreadyPlacedWords);
-                if (view == null)
+                var position = placeMethod(wordSize, alreadyPlacedWords);
+                if (position == null)
                     continue;
+                var view = new WordView(word, font, GenerateColor(), position.Value, wordSize);
 
                 var rate = DistanceSquareBetween(GetViewCenter(view), imageCenter);
                 if (bestRate == null || rate < bestRate)

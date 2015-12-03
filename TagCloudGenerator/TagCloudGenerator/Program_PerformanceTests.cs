@@ -18,7 +18,7 @@ namespace TagCloudGenerator
             var options = new Program.Options
             {
                 BgColor = Color.White,
-                TextColor = Color.Black,
+                //TextColor = Color.Black,
                 Count = 100,
                 FontFile = "Monospace",
                 Width = 400,
