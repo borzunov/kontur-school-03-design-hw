@@ -1,14 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TagCloudGenerator.WordsSources.TextSources;
 
-namespace TagCloudGenerator.WordsSources.TextSources
+namespace TagCloudGenerator.WordsSources
 {
-    public abstract class TextSource : IWordSource
+    class TextSplitter : IWordSource
     {
-        public abstract string GetText();
+        readonly ITextSource textSource;
+
+        public TextSplitter(ITextSource textSource)
+        {
+            this.textSource = textSource;
+        }
 
         public List<string> GetWords()
         {
-            var text = GetText() + '\0';
+            var text = textSource.GetText() + '\0';
             int? wordStart = null;
             var words = new List<string>();
             for (var i = 0; i < text.Length; i++)

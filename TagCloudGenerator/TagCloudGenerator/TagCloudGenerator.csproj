@@ -106,8 +106,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WordsSources\TextSources\TextDocumentReader.cs" />
-    <Compile Include="WordsSources\TextSources\TextSource.cs" />
-    <Compile Include="WordsSources\TextSources\TextSource_Tests.cs" />
+    <Compile Include="WordsSources\TextSources\ITextSource.cs" />
+    <Compile Include="WordsSources\TextSource_Tests.cs" />
+    <Compile Include="WordsSources\TextSplitter.cs" />
     <Compile Include="WordsSources\WordListReader.cs" />
     <Compile Include="WordsSources\WordUtils.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">

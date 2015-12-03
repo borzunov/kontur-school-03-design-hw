@@ -2,7 +2,7 @@
 
 namespace TagCloudGenerator.WordsSources.TextSources
 {
-    class TextDocumentReader : TextSource
+    class TextDocumentReader : ITextSource
     {
         readonly string filename;
 
@@ -11,7 +11,7 @@ namespace TagCloudGenerator.WordsSources.TextSources
             filename = options.TextDocument;
         }
 
-        public override string GetText()
+        public string GetText()
         {
             return File.ReadAllText(filename);
         }

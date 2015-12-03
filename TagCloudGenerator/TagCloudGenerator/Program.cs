@@ -23,7 +23,10 @@ namespace TagCloudGenerator
             if (options.WordList != null)
                 container.Bind<IWordSource>().To<WordListReader>();
             else if (options.TextDocument != null)
-                container.Bind<IWordSource>().To<TextDocumentReader>();
+            {
+                container.Bind<ITextSource>().To<TextDocumentReader>();
+                container.Bind<IWordSource>().To<TextSplitter>();
+            }
             else
                 throw new ArgumentException("You should specify either --word-list or --text");
 
