@@ -25,7 +25,7 @@ namespace TagCloudGenerator
                 Height = 400,
                 MinLength = 3,
                 OutputImage = "output.png",
-                Text = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "WarAndPeace_Part1.txt")
+                Text = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Examples", "WarAndPeace_Part1.txt")
             };
 
             for (var i = 0; i < WarmupRunsCount; i++)
