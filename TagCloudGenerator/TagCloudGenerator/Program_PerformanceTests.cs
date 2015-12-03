@@ -15,7 +15,7 @@ namespace TagCloudGenerator
         [Test]
         public void processCloud_onWordsFromWarAndPeace()
         {
-            var options = new Program.Options
+            var options = new Options
             {
                 BgColor = Color.White,
                 //TextColor = Color.Black,
@@ -25,7 +25,8 @@ namespace TagCloudGenerator
                 Height = 400,
                 MinLength = 3,
                 OutputImage = "output.png",
-                Text = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Examples", "WarAndPeace_Part1.txt")
+                TextDocument = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                                            "Examples", "WarAndPeace_Part1.txt")
             };
 
             for (var i = 0; i < WarmupRunsCount; i++)

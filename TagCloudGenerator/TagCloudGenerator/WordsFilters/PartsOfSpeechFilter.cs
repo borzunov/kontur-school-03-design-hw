@@ -6,12 +6,11 @@ namespace TagCloudGenerator.WordsFilters
 {
     class PartsOfSpeechFilter : IWordsFilter
     {
-        readonly HashSet<PartOfSpeech> allowedPartsOfSpeech;
-
-        public PartsOfSpeechFilter(HashSet<PartOfSpeech> allowedPartsOfSpeech)
+        readonly HashSet<PartOfSpeech> allowedPartsOfSpeech = new HashSet<PartOfSpeech>
         {
-            this.allowedPartsOfSpeech = allowedPartsOfSpeech;
-        }
+            PartOfSpeech.Adjective,
+            PartOfSpeech.Noun,
+        };
 
         public Dictionary<string, int> Filter(IReadOnlyDictionary<string, int> statistics,
             IReadOnlyDictionary<string, WordGrammarInfo> grammarInfo)

@@ -8,9 +8,9 @@ namespace TagCloudGenerator.WordsFilters
     {
         readonly int minLength;
 
-        public LengthFilter(int minLength)
+        public LengthFilter(Options options)
         {
-            this.minLength = minLength;
+            minLength = options.MinLength;
         }
 
         public Dictionary<string, int> Filter(IReadOnlyDictionary<string, int> statistics,

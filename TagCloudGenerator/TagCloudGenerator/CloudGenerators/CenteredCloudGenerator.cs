@@ -7,13 +7,13 @@ namespace TagCloudGenerator.CloudGenerators
 {
     class CenteredCloudGenerator : GraphicsCloudGeneratorBase
     {
-        public readonly Color TextColor;
+        public readonly Color TextColor = Color.Green;
+
         readonly Random random;
 
-        public CenteredCloudGenerator(Color backgroundColor, Color textColor, FontFamily fontFamily, Size size,
-            Random random) : base(backgroundColor, size, fontFamily)
+        public CenteredCloudGenerator(Options options, FontFamily fontFamily, Random random) :
+            base(options, fontFamily)
         {
-            TextColor = textColor;
             this.random = random;
         }
 

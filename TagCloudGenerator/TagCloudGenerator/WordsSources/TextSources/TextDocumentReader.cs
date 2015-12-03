@@ -6,9 +6,9 @@ namespace TagCloudGenerator.WordsSources.TextSources
     {
         readonly string filename;
 
-        public TextDocumentReader(string filename)
+        public TextDocumentReader(Options options)
         {
-            this.filename = filename;
+            filename = options.TextDocument;
         }
 
         public override string GetText()

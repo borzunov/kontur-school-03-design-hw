@@ -9,9 +9,9 @@ namespace TagCloudGenerator.WordsSources
     {
         readonly string filename;
 
-        public WordsListReader(string filename)
+        public WordsListReader(Options options)
         {
-            this.filename = filename;
+            filename = options.WordsList;
         }
 
         public List<string> GetWords()

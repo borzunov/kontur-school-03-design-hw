@@ -1,6 +1,8 @@
-﻿using System.Drawing;
-using System.Drawing.Drawing2D;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using TagCloudGenerator.CloudGenerators;
 
 namespace TagCloudGenerator.CloudRenderers
@@ -9,11 +11,31 @@ namespace TagCloudGenerator.CloudRenderers
     {
         readonly string filename;
         readonly ImageFormat format;
-
-        public BitmapRenderer(string filename, ImageFormat format)
+        
+        static readonly Dictionary<string, ImageFormat> ImageFormats = new Dictionary<string, ImageFormat>()
         {
-            this.filename = filename;
-            this.format = format;
+            {".png", ImageFormat.Png},
+            {".bmp", ImageFormat.Bmp},
+            {".gif", ImageFormat.Gif},
+            {".jpg", ImageFormat.Jpeg},
+            {".jpeg", ImageFormat.Jpeg},
+        };
+
+        static ImageFormat GetImageFormat(string filename)
+        {
+            var imageExtension = Path.GetExtension(filename);
+            if (imageExtension == null)
+                throw new ArgumentException("Can't determine image format by extension");
+            imageExtension = imageExtension.ToLower();
+            if (!ImageFormats.ContainsKey(imageExtension))
+                throw new ArgumentException($"*.{imageExtension} images aren't supported");
+            return ImageFormats[imageExtension];
+        }
+
+        public BitmapRenderer(Options options)
+        {
+            filename = options.OutputImage;
+            format = GetImageFormat(filename);
         }
 
         public void Render(CloudScheme scheme)

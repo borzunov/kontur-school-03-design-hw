@@ -14,8 +14,8 @@ namespace TagCloudGenerator.CloudGenerators
         readonly PlaceMethod[] placeMethods;
         readonly PointF imageCenter;
 
-        public GravityCloudGenerator(Color backgroundColor, FontFamily fontFamily, Size size,
-            Random random) : base(backgroundColor, size, fontFamily)
+        public GravityCloudGenerator(Options options, FontFamily fontFamily, Random random) :
+            base(options, fontFamily)
         {
             this.random = random;
 
@@ -24,7 +24,7 @@ namespace TagCloudGenerator.CloudGenerators
                 PlaceWordOnTheLeft, PlaceWordOnTheRight, PlaceWordOnTheTop, PlaceWordOnTheBottom
             };
 
-            imageCenter = new PointF(size.Width / 2.0f, size.Height / 2.0f);
+            imageCenter = new PointF(Size.Width / 2.0f, Size.Height / 2.0f);
         }
 
         const int MaxColorValue = 128;

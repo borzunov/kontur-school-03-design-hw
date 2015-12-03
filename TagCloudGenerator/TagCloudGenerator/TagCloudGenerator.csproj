@@ -84,6 +84,7 @@
     <Compile Include="CloudProcessor.cs" />
     <Compile Include="CloudRenderers\BitmapRenderer.cs" />
     <Compile Include="GrammarInfo\MystemGrammarInfoParser_Tests.cs" />
+    <Compile Include="Options.cs" />
     <Compile Include="OptionsFiller.cs" />
     <Compile Include="Program_PerformanceTests.cs" />
     <Compile Include="WordsFilters\GrammarFormsJoiner_Tests.cs" />

@@ -9,7 +9,10 @@ namespace TagCloudGenerator.WordsFilters
         [Test]
         public void Filter_takesMostCommonWords()
         {
-            var filter = new MostCommonWordsFilter(2);
+            var filter = new MostCommonWordsFilter(new Options
+            {
+                Count = 2
+            });
             var statistics = new Dictionary<string, int>
             {
                 {"работал", 80}, {"активное", 20}, {"существо", 50}, {"хитрость", 40}

@@ -26,8 +26,12 @@ namespace TagCloudGenerator.CloudGenerators
 
         const int RandomSeed = 42;
 
-        static readonly CenteredCloudGenerator GeneratorExample = new CenteredCloudGenerator(
-            Color.WhiteSmoke, Color.Gray, FontFamily.GenericSansSerif, new Size(200, 200), new Random(RandomSeed));
+        static readonly CenteredCloudGenerator GeneratorExample = new CenteredCloudGenerator(new Options
+        {
+            BgColor = Color.WhiteSmoke,
+            Width = 200,
+            Height = 200
+        }, FontFamily.GenericSansSerif, new Random(RandomSeed));
 
         [Test]
         public void Generate_considersConstructorParameters()

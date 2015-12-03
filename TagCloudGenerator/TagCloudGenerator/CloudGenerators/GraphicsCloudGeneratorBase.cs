@@ -10,10 +10,10 @@ namespace TagCloudGenerator.CloudGenerators
         public readonly Size Size;
         public readonly FontFamily FontFamily;
 
-        protected GraphicsCloudGeneratorBase(Color backgroundColor, Size size, FontFamily fontFamily)
+        protected GraphicsCloudGeneratorBase(Options options, FontFamily fontFamily)
         {
-            BackgroundColor = backgroundColor;
-            Size = size;
+            BackgroundColor = options.BgColor;
+            Size = new Size(options.Width, options.Height);
             FontFamily = fontFamily;
         }
 

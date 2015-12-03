@@ -8,9 +8,9 @@ namespace TagCloudGenerator.WordsFilters
     {
         readonly int count;
 
-        public MostCommonWordsFilter(int count)
+        public MostCommonWordsFilter(Options options)
         {
-            this.count = count;
+            count = options.Count;
         }
 
         public Dictionary<string, int> Filter(IReadOnlyDictionary<string, int> statistics,

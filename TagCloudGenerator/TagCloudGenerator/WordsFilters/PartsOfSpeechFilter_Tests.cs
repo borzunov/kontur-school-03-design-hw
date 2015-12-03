@@ -11,10 +11,7 @@ namespace TagCloudGenerator.WordsFilters
         [Test]
         public void Filter_filtersByPartOfSpeech()
         {
-            var filter = new PartsOfSpeechFilter(new HashSet<PartOfSpeech>
-            {
-                PartOfSpeech.Noun, PartOfSpeech.Verb
-            });
+            var filter = new PartsOfSpeechFilter();
             var statistics = new Dictionary<string, int>
             {
                 {"работал", 10}, {"активное", 20}, {"существо", 30}
@@ -28,7 +25,7 @@ namespace TagCloudGenerator.WordsFilters
 
             statistics.Should().Equal(new Dictionary<string, int>
             {
-                {"работал", 10}, {"существо", 30}
+                {"активное", 20}, {"существо", 30}
             });
         }
     }
