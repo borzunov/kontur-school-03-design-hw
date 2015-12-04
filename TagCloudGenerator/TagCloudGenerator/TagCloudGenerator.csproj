@@ -74,13 +74,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CloudGenerators\CenteredCloudGenerator.cs" />
-    <Compile Include="CloudGenerators\CenteredCloudGenerator_Tests.cs" />
-    <Compile Include="CloudGenerators\FontLoader.cs" />
-    <Compile Include="CloudGenerators\GraphicsCloudGeneratorBase.cs" />
+    <Compile Include="FontManagers\FontLoader.cs" />
     <Compile Include="CloudGenerators\CloudScheme.cs" />
     <Compile Include="CloudGenerators\GravityCloudGenerator.cs" />
+    <Compile Include="FontManagers\LinearSizeFontManager.cs" />
     <Compile Include="CloudGenerators\RandomExtensions.cs" />
     <Compile Include="CloudGenerators\WordView.cs" />
+    <Compile Include="FontManagers\GraphicsFontMeasurer.cs" />
+    <Compile Include="FontManagers\IFontManager.cs" />
+    <Compile Include="FontManagers\WordRectangle.cs" />
     <Compile Include="Processor\CloudProcessor.cs" />
     <Compile Include="Processor\WordRating.cs" />
     <Compile Include="Processor\WordStatistics.cs" />
@@ -107,7 +109,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WordsSources\TextSources\TextDocumentReader.cs" />
     <Compile Include="WordsSources\TextSources\ITextSource.cs" />
-    <Compile Include="WordsSources\TextSource_Tests.cs" />
+    <Compile Include="WordsSources\TextSplitter_Tests.cs" />
     <Compile Include="WordsSources\TextSplitter.cs" />
     <Compile Include="WordsSources\WordListReader.cs" />
     <Compile Include="WordsSources\WordUtils.cs" />

@@ -4,6 +4,7 @@ using System.IO;
 using Ninject;
 using TagCloudGenerator.CloudGenerators;
 using TagCloudGenerator.CloudRenderers;
+using TagCloudGenerator.FontManagers;
 using TagCloudGenerator.GrammarInfo;
 using TagCloudGenerator.Processor;
 using TagCloudGenerator.WordsFilters;
@@ -37,7 +38,9 @@ namespace TagCloudGenerator
             
             container.Bind<FontFamily>().ToConstant(FontLoader.LoadFontFamily(options.FontFile));
 
+            container.Bind<IFontManager>().To<LinearSizeFontManager>();
             container.Bind<ICloudGenerator>().To<GravityCloudGenerator>();
+
             container.Bind<ICloudRenderer>().To<BitmapRenderer>();
 
             container.Get<CloudProcessor>().Process();

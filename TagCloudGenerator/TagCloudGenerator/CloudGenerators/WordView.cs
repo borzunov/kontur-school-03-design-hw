@@ -1,22 +1,18 @@
 ﻿using System.Drawing;
+using TagCloudGenerator.FontManagers;
 
 namespace TagCloudGenerator.CloudGenerators
 {
-    class WordView
+    class WordView : WordRectangle
     {
-        public readonly string Word;
-        public readonly Font Font;
-        public readonly Color Color;
         public readonly Point Position;
-        public readonly Size Size;
+        public readonly Color Color;
 
-        public WordView(string word, Font font, Color color, Point position, Size size)
+        public WordView(WordRectangle rectangle, Point position, Color color) :
+            base(rectangle.Word, rectangle.Font, rectangle.Size)
         {
-            Word = word;
-            Font = font;
             Color = color;
             Position = position;
-            Size = size;
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using TagCloudGenerator.CloudGenerators;
+﻿using TagCloudGenerator.CloudGenerators;
 using TagCloudGenerator.CloudRenderers;
+using TagCloudGenerator.FontManagers;
 using TagCloudGenerator.GrammarInfo;
 using TagCloudGenerator.WordsFilters;
 using TagCloudGenerator.WordsSources;
@@ -14,18 +14,21 @@ namespace TagCloudGenerator.Processor
         readonly GrammarFormJoiner grammarFormJoiner;
         readonly IWordFilter[] wordFilters;
         readonly int wordCount;
+        readonly IFontManager fontManager;
         readonly ICloudGenerator cloudGenerator;
         readonly ICloudRenderer cloudRenderer;
 
         public CloudProcessor(Options options, IWordSource wordSource, IGrammarInfoParser grammarInfoParser,
             GrammarFormJoiner grammarFormJoiner, IWordFilter[] wordFilters,
-            ICloudGenerator cloudGenerator, ICloudRenderer cloudRenderer)
+            IFontManager fontManager, ICloudGenerator cloudGenerator,
+            ICloudRenderer cloudRenderer)
         {
             this.wordSource = wordSource;
             this.grammarInfoParser = grammarInfoParser;
             this.grammarFormJoiner = grammarFormJoiner;
             this.wordFilters = wordFilters;
             wordCount = options.Count;
+            this.fontManager = fontManager;
             this.cloudGenerator = cloudGenerator;
             this.cloudRenderer = cloudRenderer;
         }
@@ -43,7 +46,9 @@ namespace TagCloudGenerator.Processor
                 statistics = filter.Filter(statistics, grammarInfo);
 
             var rating = new WordRating(statistics, wordCount);
-            var cloudScheme = cloudGenerator.Generate(rating);
+            var wordRectangles = fontManager.GenerateFonts(rating);
+            var cloudScheme = cloudGenerator.Generate(wordRectangles);
+
             cloudRenderer.Render(cloudScheme);
         }
     }

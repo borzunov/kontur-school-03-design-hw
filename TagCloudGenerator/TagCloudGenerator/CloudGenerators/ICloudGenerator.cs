@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
-using TagCloudGenerator.Processor;
+using TagCloudGenerator.FontManagers;
 
 namespace TagCloudGenerator.CloudGenerators
 {
     interface ICloudGenerator
     {
-        CloudScheme Generate(WordRating rating);
+        CloudScheme Generate(IEnumerable<WordRectangle> wordRectangles);
     }
 }
