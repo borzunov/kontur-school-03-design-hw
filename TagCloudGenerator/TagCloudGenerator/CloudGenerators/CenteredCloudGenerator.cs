@@ -8,29 +8,26 @@ namespace TagCloudGenerator.CloudGenerators
 {
     class CenteredCloudGenerator : ICloudGenerator
     {
-        public readonly Color BackgroundColor;
         public readonly Size Size;
         readonly Random random;
 
-        public readonly Color TextColor = Color.Green;
-
         public CenteredCloudGenerator(Options options, Random random)
         {
-            BackgroundColor = options.BgColor;
             Size = new Size(options.Width, options.Height);
             this.random = random;
         }
 
-        WordView PlaceFirstWord(WordRectangle rectangle)
+        PlacedWordRectangle PlaceFirstWord(WordRectangle rectangle)
         {
             var position = new Point(
                 (Size.Width - rectangle.Size.Width) / 2,
                 (Size.Height - rectangle.Size.Height) / 2
             );
-            return new WordView(rectangle, position, TextColor);
+            return new PlacedWordRectangle(rectangle, position);
         }
 
-        WordView PlaceNextWord(WordRectangle rectangle, IReadOnlyList<WordView> alreadyPlacedWords)
+        PlacedWordRectangle PlaceNextWord(WordRectangle rectangle,
+            IReadOnlyList<PlacedWordRectangle> alreadyPlacedWords)
         {
             if (rectangle.Size.Width > Size.Width || rectangle.Size.Height > Size.Height)
                 return null;
@@ -48,18 +45,18 @@ namespace TagCloudGenerator.CloudGenerators
                     .Select(placedWord => new Rectangle(placedWord.Position, placedWord.Size))
                     .Any(curRect.IntersectsWith);
                 if (!hasIntersection)
-                    return new WordView(rectangle, curPosition, TextColor);
+                    return new PlacedWordRectangle(rectangle, curPosition);
             }
             return null;
         }
 
-        public CloudScheme Generate(IEnumerable<WordRectangle> wordRectangles)
+        public CloudScheme<PlacedWordRectangle> Generate(IEnumerable<WordRectangle> wordRectangles)
         {
             var rectanglesArray = wordRectangles.ToArray();
             if (rectanglesArray.Length == 0)
-                return new CloudScheme(Size, BackgroundColor, new List<WordView>());
+                return new CloudScheme<PlacedWordRectangle>(Size, new List<PlacedWordRectangle>());
 
-            var wordsViews = new List<WordView> { PlaceFirstWord(rectanglesArray[0]) };
+            var wordsViews = new List<PlacedWordRectangle> { PlaceFirstWord(rectanglesArray[0]) };
             foreach (var rectangle in rectanglesArray.Skip(1))
             {
                 var view = PlaceNextWord(rectangle, wordsViews);
@@ -68,7 +65,7 @@ namespace TagCloudGenerator.CloudGenerators
                 wordsViews.Add(view);
             }
 
-            return new CloudScheme(Size, BackgroundColor, wordsViews);
+            return new CloudScheme<PlacedWordRectangle>(Size, wordsViews);
         }
     }
 }

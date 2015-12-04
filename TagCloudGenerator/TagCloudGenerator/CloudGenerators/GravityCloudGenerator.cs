@@ -8,20 +8,19 @@ namespace TagCloudGenerator.CloudGenerators
 {
     class GravityCloudGenerator : ICloudGenerator
     {
-        public readonly Color BackgroundColor;
-        public readonly Size Size;
         readonly Random random;
 
-        delegate Point? PlaceMethod(Size wordSize, IReadOnlyList<WordView> alreadyPlacedWords);
+        public readonly Size Size;
+
+        delegate Point? PlaceMethod(Size wordSize, IReadOnlyList<PlacedWordRectangle> alreadyPlacedWords);
 
         readonly PlaceMethod[] placeMethods;
         readonly PointF imageCenter;
 
-        public GravityCloudGenerator(Options options, Random random)
+        public GravityCloudGenerator(Random random, Options options)
         {
-            BackgroundColor = options.BgColor;
-            Size = new Size(options.Width, options.Height);
             this.random = random;
+            Size = new Size(options.Width, options.Height);
 
             placeMethods = new PlaceMethod[]
             {
@@ -31,20 +30,13 @@ namespace TagCloudGenerator.CloudGenerators
             imageCenter = new PointF(Size.Width / 2.0f, Size.Height / 2.0f);
         }
 
-        const int MaxColorValue = 128;
-
-        Color GenerateColor()
-        {
-            return Color.FromArgb(random.Next(MaxColorValue), random.Next(MaxColorValue), random.Next(MaxColorValue));
-        }
-
-        WordView PlaceFirstWord(WordRectangle rectangle)
+        PlacedWordRectangle PlaceFirstWord(WordRectangle rectangle)
         {
             var position = new Point(
                 (Size.Width - rectangle.Size.Width) / 2,
                 (Size.Height - rectangle.Size.Height) / 2
             );
-            return new WordView(rectangle, position, GenerateColor());
+            return new PlacedWordRectangle(rectangle, position);
         }
 
         static bool AreSegmentsIntersect(int l1, int r1, int l2, int r2)
@@ -52,8 +44,8 @@ namespace TagCloudGenerator.CloudGenerators
             return Math.Min(r1, r2) >= Math.Max(l1, l2);
         }
 
-        Tuple<int, IEnumerable<WordView>> GetHorizontalStripe(Size wordSize,
-            IReadOnlyList<WordView> alreadyPlacedWords)
+        Tuple<int, IEnumerable<PlacedWordRectangle>> GetHorizontalStripe(Size wordSize,
+            IReadOnlyList<PlacedWordRectangle> alreadyPlacedWords)
         {
             var minUsedY = alreadyPlacedWords.Min(view => view.Position.Y);
             var maxUsedY = alreadyPlacedWords.Max(view => view.Position.Y + view.Size.Height);
@@ -70,7 +62,7 @@ namespace TagCloudGenerator.CloudGenerators
 
         const int PlacingMargin = 3;
 
-        Point? PlaceWordOnTheLeft(Size wordSize, IReadOnlyList<WordView> alreadyPlacedWords)
+        Point? PlaceWordOnTheLeft(Size wordSize, IReadOnlyList<PlacedWordRectangle> alreadyPlacedWords)
         {
             var stripe = GetHorizontalStripe(wordSize, alreadyPlacedWords);
 
@@ -82,7 +74,7 @@ namespace TagCloudGenerator.CloudGenerators
             return new Point(positionX, stripe.Item1);
         }
 
-        Point? PlaceWordOnTheRight(Size wordSize, IReadOnlyList<WordView> alreadyPlacedWords)
+        Point? PlaceWordOnTheRight(Size wordSize, IReadOnlyList<PlacedWordRectangle> alreadyPlacedWords)
         {
             var stripe = GetHorizontalStripe(wordSize, alreadyPlacedWords);
 
@@ -104,30 +96,30 @@ namespace TagCloudGenerator.CloudGenerators
             return new Point(point.Y, point.X);
         }
 
-        static WordView SwapViewCoordinates(WordView view)
+        static PlacedWordRectangle SwapViewCoordinates(PlacedWordRectangle rectangle)
         {
-            var newRectangle = new WordRectangle(view.Word, view.Font, SwapSizeElements(view.Size));
-            return new WordView(newRectangle, SwapPointCoordinates(view.Position), view.Color);
+            var newRectangle = new WordRectangle(rectangle.Word, rectangle.Font, SwapSizeElements(rectangle.Size));
+            return new PlacedWordRectangle(newRectangle, SwapPointCoordinates(rectangle.Position));
         }
         
-        Point? PlaceWordOnTheTop(Size wordSize, IReadOnlyList<WordView> alreadyPlacedWords)
+        Point? PlaceWordOnTheTop(Size wordSize, IReadOnlyList<PlacedWordRectangle> alreadyPlacedWords)
         {
             var swappedPoint = PlaceWordOnTheLeft(SwapSizeElements(wordSize),
                 alreadyPlacedWords.Select(SwapViewCoordinates).ToList());
             return swappedPoint != null ? (Point?) SwapPointCoordinates(swappedPoint.Value) : null;
         }
         
-        Point? PlaceWordOnTheBottom(Size wordSize, IReadOnlyList<WordView> alreadyPlacedWords)
+        Point? PlaceWordOnTheBottom(Size wordSize, IReadOnlyList<PlacedWordRectangle> alreadyPlacedWords)
         {
             var swappedPoint = PlaceWordOnTheRight(SwapSizeElements(wordSize),
                 alreadyPlacedWords.Select(SwapViewCoordinates).ToList());
             return swappedPoint != null ? (Point?)SwapPointCoordinates(swappedPoint.Value) : null;
         }
 
-        static PointF GetViewCenter(WordView view)
+        static PointF GetViewCenter(PlacedWordRectangle rectangle)
         {
-            return new PointF(view.Position.X + view.Size.Width / 2.0f,
-                              view.Position.Y + view.Size.Height / 2.0f);
+            return new PointF(rectangle.Position.X + rectangle.Size.Width / 2.0f,
+                              rectangle.Position.Y + rectangle.Size.Height / 2.0f);
         }
 
         static double DistanceSquareBetween(PointF a, PointF b)
@@ -135,13 +127,14 @@ namespace TagCloudGenerator.CloudGenerators
             return (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y);
         }
 
-        WordView PlaceNextWord(WordRectangle rectangle, IReadOnlyList<WordView> alreadyPlacedWords)
+        PlacedWordRectangle PlaceNextWord(WordRectangle rectangle,
+            IReadOnlyList<PlacedWordRectangle> alreadyPlacedWords)
         {
             if (rectangle.Size.Width > Size.Width || rectangle.Size.Height > Size.Height)
                 return null;
 
             var triesCount = Math.Max(50, alreadyPlacedWords.Count * 2);
-            WordView bestView = null;
+            PlacedWordRectangle bestRectangle = null;
             double? bestRate = null;
             for (var i = 0; i < triesCount; i++)
             {
@@ -149,25 +142,25 @@ namespace TagCloudGenerator.CloudGenerators
                 var position = placeMethod(rectangle.Size, alreadyPlacedWords);
                 if (position == null)
                     continue;
-                var view = new WordView(rectangle, position.Value, GenerateColor());
+                var view = new PlacedWordRectangle(rectangle, position.Value);
 
                 var rate = DistanceSquareBetween(GetViewCenter(view), imageCenter);
                 if (bestRate == null || rate < bestRate)
                 {
-                    bestView = view;
+                    bestRectangle = view;
                     bestRate = rate;
                 }
             }
-            return bestView;
+            return bestRectangle;
         }
 
-        public CloudScheme Generate(IEnumerable<WordRectangle> wordRectangles)
+        public CloudScheme<PlacedWordRectangle> Generate(IEnumerable<WordRectangle> wordRectangles)
         {
             var shuffledRectangles = random.Shuffle(wordRectangles);
             if (shuffledRectangles.Length == 0)
-                return new CloudScheme(Size, BackgroundColor, new List<WordView>());
+                return new CloudScheme<PlacedWordRectangle>(Size, new List<PlacedWordRectangle>());
             
-            var wordsViews = new List<WordView> { PlaceFirstWord(shuffledRectangles[0]) };
+            var wordsViews = new List<PlacedWordRectangle> { PlaceFirstWord(shuffledRectangles[0]) };
             foreach (var rectangle in shuffledRectangles.Skip(1))
             {
                 var view = PlaceNextWord(rectangle, wordsViews);
@@ -178,7 +171,7 @@ namespace TagCloudGenerator.CloudGenerators
                 wordsViews.Add(view);
             }
 
-            return new CloudScheme(Size, BackgroundColor, wordsViews);
+            return new CloudScheme<PlacedWordRectangle>(Size, wordsViews);
         }
     }
 }

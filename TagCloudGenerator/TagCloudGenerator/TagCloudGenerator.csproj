@@ -74,12 +74,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CloudGenerators\CenteredCloudGenerator.cs" />
+    <Compile Include="ColorManagers\ColoredCloudScheme.cs" />
+    <Compile Include="ColorManagers\IColorManager.cs" />
+    <Compile Include="ColorManagers\RandomColorManager.cs" />
+    <Compile Include="ColorManagers\WordView.cs" />
     <Compile Include="FontManagers\FontLoader.cs" />
     <Compile Include="CloudGenerators\CloudScheme.cs" />
     <Compile Include="CloudGenerators\GravityCloudGenerator.cs" />
     <Compile Include="FontManagers\LinearSizeFontManager.cs" />
     <Compile Include="CloudGenerators\RandomExtensions.cs" />
-    <Compile Include="CloudGenerators\WordView.cs" />
+    <Compile Include="CloudGenerators\PlacedWordRectangle.cs" />
     <Compile Include="FontManagers\GraphicsFontMeasurer.cs" />
     <Compile Include="FontManagers\IFontManager.cs" />
     <Compile Include="FontManagers\WordRectangle.cs" />

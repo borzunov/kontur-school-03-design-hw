@@ -14,5 +14,12 @@ namespace TagCloudGenerator.FontManagers
             Font = font;
             Size = size;
         }
+
+        public WordRectangle(WordRectangle rectangle)
+        {
+            Word = rectangle.Word;
+            Font = rectangle.Font;
+            Size = rectangle.Size;
+        }
     }
 }

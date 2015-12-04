@@ -5,6 +5,6 @@ namespace TagCloudGenerator.CloudGenerators
 {
     interface ICloudGenerator
     {
-        CloudScheme Generate(IEnumerable<WordRectangle> wordRectangles);
+        CloudScheme<PlacedWordRectangle> Generate(IEnumerable<WordRectangle> wordRectangles);
     }
 }

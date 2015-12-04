@@ -3,17 +3,15 @@ using System.Drawing;
 
 namespace TagCloudGenerator.CloudGenerators
 {
-    class CloudScheme
+    class CloudScheme<T> where T : PlacedWordRectangle
     {
         public readonly Size Size;
-        public readonly Color BackgroundColor;
-        public readonly List<WordView> WordViews;
+        public readonly List<T> Words;
 
-        public CloudScheme(Size size, Color backgroundColor, List<WordView> wordViews)
+        public CloudScheme(Size size, List<T> words)
         {
             Size = size;
-            BackgroundColor = backgroundColor;
-            WordViews = wordViews;
+            Words = words;
         }
     }
 }

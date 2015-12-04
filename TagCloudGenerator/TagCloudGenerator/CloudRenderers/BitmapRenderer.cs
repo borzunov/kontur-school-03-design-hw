@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using TagCloudGenerator.CloudGenerators;
+using TagCloudGenerator.ColorManagers;
 
 namespace TagCloudGenerator.CloudRenderers
 {
@@ -38,14 +39,14 @@ namespace TagCloudGenerator.CloudRenderers
             format = GetImageFormat(filename);
         }
 
-        public void Render(CloudScheme scheme)
+        public void Render(ColoredCloudScheme<WordView> scheme)
         {
             using (var bitmap = new Bitmap(scheme.Size.Width, scheme.Size.Height))
             {
                 using (var g = Graphics.FromImage(bitmap))
                 {
                     g.Clear(scheme.BackgroundColor);
-                    foreach (var view in scheme.WordViews)
+                    foreach (var view in scheme.Words)
                     {
                         g.DrawString(view.Word, view.Font, new SolidBrush(view.Color), view.Position);
                         //g.DrawRectangle(new Pen(Color.Black), new Rectangle(view.Position, view.Size));
