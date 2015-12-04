@@ -13,21 +13,15 @@ namespace TagCloudGenerator.WordsFilters
         public void Filter_filtersByPartOfSpeech()
         {
             var filter = new PartOfSpeechFilter();
-            var statistics = new WordStatistics(new Dictionary<string, int>
-            {
-                {"работал", 10}, {"активное", 20}, {"существо", 30}
-            });
+            var words = new[] { "работал", "активное", "существо" };
             var grammarInfo = new Dictionary<string, PartOfSpeech>
             {
                 {"работал", PartOfSpeech.Verb}, {"существо", PartOfSpeech.Noun}, {"активное", PartOfSpeech.Adjective}
             }.ToDictionary(pair => pair.Key, pair => new WordGrammarInfo(null, pair.Value));
 
-            statistics = filter.Filter(statistics, grammarInfo);
+            var filteredWords = filter.Filter(words, grammarInfo);
 
-            statistics.OccurrenceCounts.Should().Equal(new Dictionary<string, int>
-            {
-                {"активное", 20}, {"существо", 30}
-            });
+            filteredWords.Should().BeEquivalentTo("активное", "существо");
         }
     }
 }

@@ -5,6 +5,6 @@ namespace TagCloudGenerator.FontManagers
 {
     interface IFontManager
     {
-        IEnumerable<WordRectangle> GenerateFonts(WordRating rating);
+        IEnumerable<WordRectangle> GenerateFonts(WordRating[] orderedRatings);
     }
 }

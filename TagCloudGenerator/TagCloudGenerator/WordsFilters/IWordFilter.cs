@@ -6,7 +6,7 @@ namespace TagCloudGenerator.WordsFilters
 {
     interface IWordFilter
     {
-        WordStatistics Filter(WordStatistics statistics,
+        IEnumerable<string> Filter(IEnumerable<string> words,
             IReadOnlyDictionary<string, WordGrammarInfo> grammarInfo);
     }
 }

@@ -14,7 +14,7 @@ namespace TagCloudGenerator.WordsSources
             filename = options.WordList;
         }
 
-        public List<string> GetWords()
+        public IEnumerable<string> GetWords()
         {
             var lines = File.ReadAllLines(filename);
             foreach (var line in lines.Where(line => line != ""))
@@ -23,7 +23,7 @@ namespace TagCloudGenerator.WordsSources
                     throw new FormatException(
                         $"Line \"${line}\" contains characters that isn't allowed in a word");
             }
-            return lines.ToList();
+            return lines;
         }
     }
 }

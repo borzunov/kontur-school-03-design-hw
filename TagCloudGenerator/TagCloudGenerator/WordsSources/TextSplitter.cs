@@ -16,7 +16,7 @@ namespace TagCloudGenerator.WordsSources
             this.textSource = textSource;
         }
 
-        public List<string> GetWords()
+        public IEnumerable<string> GetWords()
         {
             var text = textSource.GetText() + '\0';
             int? wordStart = null;

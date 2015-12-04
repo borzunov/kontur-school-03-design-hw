@@ -4,6 +4,6 @@ namespace TagCloudGenerator.WordsSources
 {
     interface IWordSource
     {
-        List<string> GetWords();
+        IEnumerable<string> GetWords();
     }
 }

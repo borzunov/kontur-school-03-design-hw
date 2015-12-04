@@ -14,17 +14,11 @@ namespace TagCloudGenerator.WordsFilters
             {
                 MinLength = 3
             });
-            var statistics = new WordStatistics(new Dictionary<string, int>
-            {
-                {"в", 80}, {"на", 230}, {"как", 50}, {"активное", 20}, {"хитрость", 40}
-            });
+            var words = new[] { "в", "на", "как", "активное", "хитрость" };
 
-            statistics = filter.Filter(statistics, null);
+            var filteredWords = filter.Filter(words, null);
 
-            statistics.OccurrenceCounts.Should().Equal(new Dictionary<string, int>
-            {
-                {"как", 50}, {"активное", 20}, {"хитрость", 40}
-            });
+            filteredWords.Should().BeEquivalentTo("как", "активное", "хитрость");
         }
     }
 }

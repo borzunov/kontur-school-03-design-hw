@@ -1,4 +1,6 @@
-﻿using TagCloudGenerator.CloudGenerators;
+﻿using System.Collections.Generic;
+using System.Linq;
+using TagCloudGenerator.CloudGenerators;
 using TagCloudGenerator.CloudRenderers;
 using TagCloudGenerator.FontManagers;
 using TagCloudGenerator.GrammarInfo;
@@ -37,16 +39,24 @@ namespace TagCloudGenerator.Processor
         {
             var words = wordSource.GetWords();
 
-            var statistics = new WordStatistics(words);
-            var grammarInfo = grammarInfoParser.GetGrammarInfo(statistics.OccurrenceCounts.Keys);
+            var statistics = new OccurrenceStatistics(words);
 
+            var grammarInfo = grammarInfoParser.GetGrammarInfo(statistics.OccurrenceCount.Keys);
             statistics = grammarFormJoiner.Join(statistics, grammarInfo);
-            
-            foreach (var filter in wordFilters)
-                statistics = filter.Filter(statistics, grammarInfo);
 
-            var rating = new WordRating(statistics, wordCount);
-            var wordRectangles = fontManager.GenerateFonts(rating);
+            IEnumerable<string> filteredWords = statistics.OccurrenceCount.Keys;
+            foreach (var filter in wordFilters)
+                filteredWords = filter.Filter(filteredWords, grammarInfo);
+            var filteredWordsSet = new HashSet<string>(filteredWords);
+
+            var orderedRatings = statistics.OccurrenceCount
+                .Select(pair => new WordRating(pair.Key, pair.Value))
+                .Where(item => filteredWordsSet.Contains(item.Word))
+                .OrderByDescending(item => item.OccurencesCount)
+                .Take(wordCount)
+                .ToArray();
+
+            var wordRectangles = fontManager.GenerateFonts(orderedRatings);
             var cloudScheme = cloudGenerator.Generate(wordRectangles);
 
             cloudRenderer.Render(cloudScheme);

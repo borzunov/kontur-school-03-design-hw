@@ -29,22 +29,20 @@ namespace TagCloudGenerator.FontManagers
             return new Font(FontFamily, fontSize, FontStyle.Bold);
         }
 
-        public IEnumerable<WordRectangle> GenerateFonts(WordRating rating)
+        public IEnumerable<WordRectangle> GenerateFonts(WordRating[] orderedRatings)
         {
-            var wordsByOccurenceCount = rating.WordsByOccurenceCount;
-            if (wordsByOccurenceCount.Length == 0)
+            if (orderedRatings.Length == 0)
                 return Enumerable.Empty<WordRectangle>();
 
-            var maxRate = wordsByOccurenceCount[0].Value;
-            var minRate = wordsByOccurenceCount[wordsByOccurenceCount.Length - 1].Value;
+            var maxRate = orderedRatings[0].OccurencesCount;
+            var minRate = orderedRatings[orderedRatings.Length - 1].OccurencesCount;
 
-            return rating.WordsByOccurenceCount
-                .Select(pair =>
+            return orderedRatings
+                .Select(item =>
                 {
-                    var word = pair.Key;
-                    var font = GetFont(pair.Value, minRate, maxRate);
-                    var size = GraphicsFontMeasurer.MeasureString(word, font);
-                    return new WordRectangle(word, font, size);
+                    var font = GetFont(item.OccurencesCount, minRate, maxRate);
+                    var size = GraphicsFontMeasurer.MeasureString(item.Word, font);
+                    return new WordRectangle(item.Word, font, size);
                 });
         }
     }

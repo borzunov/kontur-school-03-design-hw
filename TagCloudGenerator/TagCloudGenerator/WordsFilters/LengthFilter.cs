@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TagCloudGenerator.GrammarInfo;
-using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.WordsFilters
 {
@@ -14,12 +13,10 @@ namespace TagCloudGenerator.WordsFilters
             minLength = options.MinLength;
         }
 
-        public WordStatistics Filter(WordStatistics statistics,
+        public IEnumerable<string> Filter(IEnumerable<string> words,
             IReadOnlyDictionary<string, WordGrammarInfo> grammarInfo)
         {
-            return new WordStatistics(statistics.OccurrenceCounts
-                .Where(pair => pair.Key.Length >= minLength)
-                .ToDictionary(pair => pair.Key, pair => pair.Value));
+            return words.Where(word => word.Length >= minLength);
         }
     }
 }

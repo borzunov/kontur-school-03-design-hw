@@ -11,7 +11,7 @@ namespace TagCloudGenerator.GrammarInfo
         public void Join_mergesGrammarForms()
         {
             var filter = new GrammarFormJoiner();
-            var statistics = new WordStatistics(new Dictionary<string, int>
+            var statistics = new OccurrenceStatistics(new Dictionary<string, int>
             {
                 {"активный", 10}, {"активное", 20}, {"команд", 40},
             });
@@ -24,18 +24,18 @@ namespace TagCloudGenerator.GrammarInfo
 
             statistics = filter.Join(statistics, grammarInfo);
 
-            statistics.OccurrenceCounts.Keys.Should().HaveCount(2)
+            statistics.OccurrenceCount.Keys.Should().HaveCount(2)
                 .And.Contain(key => grammarInfo[key].InitialForm == "активный" &&
-                                    statistics.OccurrenceCounts[key] == 30)
+                                    statistics.OccurrenceCount[key] == 30)
                 .And.Contain(key => grammarInfo[key].InitialForm == "команда" &&
-                                    statistics.OccurrenceCounts[key] == 40);
+                                    statistics.OccurrenceCount[key] == 40);
         }
 
         [Test]
         public void Join_selectsMostCommonForm()
         {
             var filter = new GrammarFormJoiner();
-            var statistics = new WordStatistics(new Dictionary<string, int>
+            var statistics = new OccurrenceStatistics(new Dictionary<string, int>
             {
                 {"активный", 10}, {"активное", 20}, {"команд", 40},
             });
@@ -48,7 +48,7 @@ namespace TagCloudGenerator.GrammarInfo
 
             statistics = filter.Join(statistics, grammarInfo);
             
-            statistics.OccurrenceCounts.Keys.Should().BeEquivalentTo("активное", "команд");
+            statistics.OccurrenceCount.Keys.Should().BeEquivalentTo("активное", "команд");
         }
     }
 }

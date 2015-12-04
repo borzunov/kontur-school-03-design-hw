@@ -13,13 +13,12 @@ namespace TagCloudGenerator.WordsFilters
             PartOfSpeech.Noun,
         };
 
-        public WordStatistics Filter(WordStatistics statistics,
+        public IEnumerable<string> Filter(IEnumerable<string> words,
             IReadOnlyDictionary<string, WordGrammarInfo> grammarInfo)
         {
-            return new WordStatistics(statistics.OccurrenceCounts
-                .Where(pair => grammarInfo.ContainsKey(pair.Key) &&
-                               allowedPartsOfSpeech.Contains(grammarInfo[pair.Key].PartOfSpeech))
-                .ToDictionary(pair => pair.Key, pair => pair.Value));
+            return words
+                .Where(word => grammarInfo.ContainsKey(word) &&
+                               allowedPartsOfSpeech.Contains(grammarInfo[word].PartOfSpeech));
         }
     }
 }

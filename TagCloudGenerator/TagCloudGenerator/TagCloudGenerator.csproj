@@ -85,7 +85,7 @@
     <Compile Include="FontManagers\WordRectangle.cs" />
     <Compile Include="Processor\CloudProcessor.cs" />
     <Compile Include="Processor\WordRating.cs" />
-    <Compile Include="Processor\WordStatistics.cs" />
+    <Compile Include="Processor\OccurrenceStatistics.cs" />
     <Compile Include="CloudRenderers\BitmapRenderer.cs" />
     <Compile Include="GrammarInfo\MystemGrammarInfoParser_Tests.cs" />
     <Compile Include="Options.cs" />
