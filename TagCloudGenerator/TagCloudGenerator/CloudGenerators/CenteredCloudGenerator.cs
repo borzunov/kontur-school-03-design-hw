@@ -8,13 +8,15 @@ namespace TagCloudGenerator.CloudGenerators
 {
     class CenteredCloudGenerator : ICloudGenerator
     {
-        public readonly Size Size;
         readonly Random random;
 
-        public CenteredCloudGenerator(Options options, Random random)
+        public readonly Size Size;
+
+        public CenteredCloudGenerator(Random random, Options options)
         {
-            Size = new Size(options.Width, options.Height);
             this.random = random;
+
+            Size = new Size(options.Width, options.Height);
         }
 
         PlacedWordRectangle PlaceFirstWord(WordRectangle rectangle)

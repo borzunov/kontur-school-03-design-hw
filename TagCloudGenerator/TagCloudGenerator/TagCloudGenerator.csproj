@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CloudGenerators\CenteredCloudGenerator.cs" />
+    <Compile Include="CloudGenerators\CenteredCloudGenerator_Tests.cs" />
     <Compile Include="ColorManagers\ColoredCloudScheme.cs" />
     <Compile Include="ColorManagers\IColorManager.cs" />
     <Compile Include="ColorManagers\RandomColorManager.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="CloudGenerators\PlacedWordRectangle.cs" />
     <Compile Include="FontManagers\GraphicsFontMeasurer.cs" />
     <Compile Include="FontManagers\IFontManager.cs" />
+    <Compile Include="FontManagers\LinearSizeFontManager_Tests.cs" />
     <Compile Include="FontManagers\WordRectangle.cs" />
     <Compile Include="Processor\CloudProcessor.cs" />
     <Compile Include="Processor\WordRating.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="GrammarInfo\MystemGrammarInfoParser_Tests.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="OptionsFiller.cs" />
+    <Compile Include="Processor\WordRatingTestHelper.cs" />
     <Compile Include="Program_PerformanceTests.cs" />
     <Compile Include="GrammarInfo\GrammarFormJoiner_Tests.cs" />
     <Compile Include="WordsFilters\LengthFilter.cs" />
