@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using TagCloudGenerator.CloudGenerators;
 using TagCloudGenerator.ColorManagers;
 
 namespace TagCloudGenerator.CloudRenderers

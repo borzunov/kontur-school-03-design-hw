@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
-using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.WordsFilters
 {

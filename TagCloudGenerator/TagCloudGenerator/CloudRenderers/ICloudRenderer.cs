@@ -1,5 +1,4 @@
-﻿using TagCloudGenerator.CloudGenerators;
-using TagCloudGenerator.ColorManagers;
+﻿using TagCloudGenerator.ColorManagers;
 
 namespace TagCloudGenerator.CloudRenderers
 {

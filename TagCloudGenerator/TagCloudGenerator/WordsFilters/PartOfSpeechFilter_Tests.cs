@@ -3,7 +3,6 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TagCloudGenerator.GrammarInfo;
-using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.WordsFilters
 {

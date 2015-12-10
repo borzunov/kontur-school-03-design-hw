@@ -8,14 +8,14 @@ using System.Text.RegularExpressions;
 
 namespace TagCloudGenerator.GrammarInfo
 {
-    class MystemGrammarInfoParser : IGrammarInfoParser
+    static class MystemGrammarInfoParser
     {
         public static readonly string MystemPath = AppDomain.CurrentDomain.BaseDirectory;
 
         public const string MystemExecutableFilename = "mystem.exe";
         const string MystemArguments = "-i -n";
 
-        List<string> CommunicateWithProcess(IEnumerable<string> inputLines)
+        static List<string> CommunicateWithProcess(IEnumerable<string> inputLines)
         {
             var process = new Process
             {
@@ -92,7 +92,7 @@ namespace TagCloudGenerator.GrammarInfo
             return Tuple.Create(word, new WordGrammarInfo(initialForm, partOfSpeech));
         }
 
-        public IReadOnlyDictionary<string, WordGrammarInfo> GetGrammarInfo(IEnumerable<string> words)
+        public static IReadOnlyDictionary<string, WordGrammarInfo> GetGrammarInfo(IEnumerable<string> words)
         {
             var wordList = words
                 .Where(word => !word.Contains('\''))

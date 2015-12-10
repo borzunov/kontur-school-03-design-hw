@@ -4,9 +4,9 @@ using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.GrammarInfo
 {
-    class GrammarFormJoiner
+    static class GrammarFormJoiner
     {
-        public OccurrenceStatistics Join(OccurrenceStatistics statistics,
+        public static OccurrenceStatistics Join(OccurrenceStatistics statistics,
             IReadOnlyDictionary<string, WordGrammarInfo> grammarInfo)
         {
             var wordsGroupedByInitialForm = statistics.OccurrenceCount.Keys

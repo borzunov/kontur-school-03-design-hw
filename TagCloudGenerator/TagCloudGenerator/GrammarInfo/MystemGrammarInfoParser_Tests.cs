@@ -11,7 +11,7 @@ namespace TagCloudGenerator.GrammarInfo
         {
             var words = new[] { "Маша", "сделала", "твои", "задачи" };
             
-            var grammarInfo = new MystemGrammarInfoParser().GetGrammarInfo(words);
+            var grammarInfo = MystemGrammarInfoParser.GetGrammarInfo(words);
             var partsOfSpeech = words
                 .Select(word => grammarInfo[word].PartOfSpeech);
 
@@ -25,8 +25,8 @@ namespace TagCloudGenerator.GrammarInfo
         public void GetGrammarInfo_determinesInitialForm()
         {
             var words = new[] { "Лев", "сделал", "нужные", "задачи" };
-            
-            var grammarInfo = new MystemGrammarInfoParser().GetGrammarInfo(words);
+
+            var grammarInfo = MystemGrammarInfoParser.GetGrammarInfo(words);
             var partsOfSpeech = words
                 .Select(word => grammarInfo[word].InitialForm);
 

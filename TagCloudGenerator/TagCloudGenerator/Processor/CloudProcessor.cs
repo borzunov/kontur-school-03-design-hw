@@ -1,55 +1,39 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TagCloudGenerator.CloudGenerators;
-using TagCloudGenerator.CloudRenderers;
 using TagCloudGenerator.ColorManagers;
 using TagCloudGenerator.FontManagers;
 using TagCloudGenerator.GrammarInfo;
-using TagCloudGenerator.WordsFilters;
-using TagCloudGenerator.WordsSources;
 
 namespace TagCloudGenerator.Processor
 {
-    class CloudProcessor
+    delegate IReadOnlyDictionary<string, WordGrammarInfo> GrammarInfoParser(IEnumerable<string> words);
+    delegate IEnumerable<string> WordFilter(IEnumerable<string> words,
+            IReadOnlyDictionary<string, WordGrammarInfo> grammarInfo);
+    delegate IEnumerable<WordRectangle> FontManager(IReadOnlyList<WordRating> orderedRatings);
+    delegate CloudScheme<PlacedWordRectangle> CloudGenerator(IEnumerable<WordRectangle> wordRectangles);
+    delegate ColoredCloudScheme<WordView> ColorManager(CloudScheme<PlacedWordRectangle> scheme);
+    delegate void CloudRenderer(ColoredCloudScheme<WordView> scheme);
+
+    static class CloudProcessor
     {
-        readonly IWordSource wordSource;
-        readonly IGrammarInfoParser grammarInfoParser;
-        readonly GrammarFormJoiner grammarFormJoiner;
-        readonly IWordFilter[] wordFilters;
-        readonly int wordCount;
-        readonly IFontManager fontManager;
-        readonly ICloudGenerator cloudGenerator;
-        readonly IColorManager colorManager;
-        readonly ICloudRenderer cloudRenderer;
-
-        public CloudProcessor(Options options, IWordSource wordSource, IGrammarInfoParser grammarInfoParser,
-            GrammarFormJoiner grammarFormJoiner, IWordFilter[] wordFilters,
-            IFontManager fontManager, ICloudGenerator cloudGenerator, IColorManager colorManager,
-            ICloudRenderer cloudRenderer)
+        public static void Process(IEnumerable<string> words,
+            GrammarInfoParser grammarInfoParser,
+            WordFilter[] wordFilters,
+            int wordCount,
+            FontManager fontManager,
+            CloudGenerator cloudGenerator,
+            ColorManager colorManager,
+            CloudRenderer cloudRenderer)
         {
-            this.wordSource = wordSource;
-            this.grammarInfoParser = grammarInfoParser;
-            this.grammarFormJoiner = grammarFormJoiner;
-            this.wordFilters = wordFilters;
-            wordCount = options.Count;
-            this.fontManager = fontManager;
-            this.cloudGenerator = cloudGenerator;
-            this.colorManager = colorManager;
-            this.cloudRenderer = cloudRenderer;
-        }
-
-        public void Process()
-        {
-            var words = wordSource.GetWords();
-
             var statistics = new OccurrenceStatistics(words);
 
-            var grammarInfo = grammarInfoParser.GetGrammarInfo(statistics.OccurrenceCount.Keys);
-            statistics = grammarFormJoiner.Join(statistics, grammarInfo);
+            var grammarInfo = grammarInfoParser(statistics.OccurrenceCount.Keys);
+            statistics = GrammarFormJoiner.Join(statistics, grammarInfo);
 
             IEnumerable<string> filteredWords = statistics.OccurrenceCount.Keys;
             foreach (var filter in wordFilters)
-                filteredWords = filter.Filter(filteredWords, grammarInfo);
+                filteredWords = filter(filteredWords, grammarInfo);
             var filteredWordsSet = new HashSet<string>(filteredWords);
 
             var orderedRatings = statistics.OccurrenceCount
@@ -59,11 +43,11 @@ namespace TagCloudGenerator.Processor
                 .Take(wordCount)
                 .ToList();
 
-            var wordRectangles = fontManager.GenerateFonts(orderedRatings);
-            var cloudScheme = cloudGenerator.Generate(wordRectangles);
-            var coloredCloudScheme = colorManager.GenerateColors(cloudScheme);
+            var wordRectangles = fontManager(orderedRatings);
+            var cloudScheme = cloudGenerator(wordRectangles);
+            var coloredCloudScheme = colorManager(cloudScheme);
 
-            cloudRenderer.Render(coloredCloudScheme);
+            cloudRenderer(coloredCloudScheme);
         }
     }
 }

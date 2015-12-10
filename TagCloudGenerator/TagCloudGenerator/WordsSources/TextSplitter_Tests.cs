@@ -1,7 +1,5 @@
-﻿using FakeItEasy;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
-using TagCloudGenerator.WordsSources.TextSources;
 
 namespace TagCloudGenerator.WordsSources
 {
@@ -10,12 +8,9 @@ namespace TagCloudGenerator.WordsSources
         [Test]
         public void GetWords_splitsTextToWords()
         {
-            var textSource = A.Fake<ITextSource>();
-            A.CallTo(() => textSource.GetText()).Returns(
-                "Well-written Martin's text   (with comment). ");
-            var textSplitter = new TextSplitter(textSource);
+            var text = "Well-written Martin's text   (with comment). ";
 
-            var words = textSplitter.GetWords();
+            var words = TextSplitter.GetWords(text);
             
             words.Should().Equal("Well-written", "Martin's", "text", "with", "comment");
         }
@@ -23,12 +18,9 @@ namespace TagCloudGenerator.WordsSources
         [Test]
         public void GetWords_supportsCyrillic()
         {
-            var textSource = A.Fake<ITextSource>();
-            A.CallTo(() => textSource.GetText()).Returns(
-                "Это кириллические буквы.");
-            var textSplitter = new TextSplitter(textSource);
+            var text = "Это кириллические буквы.";
 
-            var words = textSplitter.GetWords();
+            var words = TextSplitter.GetWords(text);
 
             words.Should().Equal("Это", "кириллические", "буквы");
         }

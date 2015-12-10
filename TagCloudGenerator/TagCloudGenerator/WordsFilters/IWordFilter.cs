@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using TagCloudGenerator.GrammarInfo;
-using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.WordsFilters
 {

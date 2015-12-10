@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Drawing;
+using System.Collections.Generic;
 using System.IO;
-using Ninject;
 using TagCloudGenerator.CloudGenerators;
 using TagCloudGenerator.CloudRenderers;
 using TagCloudGenerator.ColorManagers;
@@ -18,34 +17,34 @@ namespace TagCloudGenerator
     {
         public static void RunWithOptions(Options options)
         {
-            var container = new StandardKernel();
-
-            container.Bind<Options>().ToConstant(options);
-
+            IEnumerable<string> words;
             if (options.WordList != null)
-                container.Bind<IWordSource>().To<WordListReader>();
+                words = new WordListReader(options).GetWords();
             else if (options.TextDocument != null)
             {
-                container.Bind<ITextSource>().To<TextDocumentReader>();
-                container.Bind<IWordSource>().To<TextSplitter>();
+                var text = new TextDocumentReader(options).GetText();
+                words = TextSplitter.GetWords(text);
             }
             else
                 throw new ArgumentException("You should specify either --word-list or --text");
 
-            container.Bind<IGrammarInfoParser>().To<MystemGrammarInfoParser>();
+            var fontFamily = FontLoader.LoadFontFamily(options.FontFile);
 
-            container.Bind<IWordFilter>().To<PartOfSpeechFilter>();
-            container.Bind<IWordFilter>().To<LengthFilter>();
-            
-            container.Bind<FontFamily>().ToConstant(FontLoader.LoadFontFamily(options.FontFile));
+            var random = new Random();
 
-            container.Bind<IFontManager>().To<LinearSizeFontManager>();
-            container.Bind<ICloudGenerator>().To<GravityCloudGenerator>();
-            container.Bind<IColorManager>().To<RandomColorManager>();
-
-            container.Bind<ICloudRenderer>().To<BitmapRenderer>();
-
-            container.Get<CloudProcessor>().Process();
+            CloudProcessor.Process(
+                words,
+                MystemGrammarInfoParser.GetGrammarInfo,
+                new WordFilter[]
+                {
+                    new PartOfSpeechFilter().Filter,
+                    new LengthFilter(options).Filter, 
+                },
+                options.Count,
+                new LinearSizeFontManager(fontFamily).GenerateFonts, 
+                new GravityCloudGenerator(random, options).Generate,
+                new RandomColorManager(random, options).GenerateColors, 
+                new BitmapRenderer(options).Render);
         }
 
         static void Main(string[] args)
