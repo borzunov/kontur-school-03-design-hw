@@ -29,13 +29,13 @@ namespace TagCloudGenerator.FontManagers
             return new Font(FontFamily, fontSize, FontStyle.Bold);
         }
 
-        public IEnumerable<WordRectangle> GenerateFonts(WordRating[] orderedRatings)
+        public IEnumerable<WordRectangle> GenerateFonts(IReadOnlyList<WordRating> orderedRatings)
         {
-            if (orderedRatings.Length == 0)
+            if (orderedRatings.Count == 0)
                 return Enumerable.Empty<WordRectangle>();
 
             var maxRate = orderedRatings[0].OccurencesCount;
-            var minRate = orderedRatings[orderedRatings.Length - 1].OccurencesCount;
+            var minRate = orderedRatings[orderedRatings.Count - 1].OccurencesCount;
 
             return orderedRatings
                 .Select(item =>

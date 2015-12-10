@@ -6,7 +6,7 @@ namespace TagCloudGenerator.CloudGenerators
     class CloudScheme<T> where T : PlacedWordRectangle
     {
         public readonly Size Size;
-        public readonly List<T> Words;
+        public readonly IReadOnlyList<T> Words;
 
         public CloudScheme(Size size, List<T> words)
         {

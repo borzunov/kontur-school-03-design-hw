@@ -92,7 +92,7 @@ namespace TagCloudGenerator.GrammarInfo
             return Tuple.Create(word, new WordGrammarInfo(initialForm, partOfSpeech));
         }
 
-        public Dictionary<string, WordGrammarInfo> GetGrammarInfo(IEnumerable<string> words)
+        public IReadOnlyDictionary<string, WordGrammarInfo> GetGrammarInfo(IEnumerable<string> words)
         {
             var wordList = words
                 .Where(word => !word.Contains('\''))

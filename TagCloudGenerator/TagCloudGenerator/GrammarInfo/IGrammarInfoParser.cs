@@ -2,8 +2,8 @@
 
 namespace TagCloudGenerator.GrammarInfo
 {
-    internal interface IGrammarInfoParser
+    interface IGrammarInfoParser
     {
-        Dictionary<string, WordGrammarInfo> GetGrammarInfo(IEnumerable<string> words);
+        IReadOnlyDictionary<string, WordGrammarInfo> GetGrammarInfo(IEnumerable<string> words);
     }
 }

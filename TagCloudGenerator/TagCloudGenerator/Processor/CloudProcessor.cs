@@ -57,7 +57,7 @@ namespace TagCloudGenerator.Processor
                 .Where(item => filteredWordsSet.Contains(item.Word))
                 .OrderByDescending(item => item.OccurencesCount)
                 .Take(wordCount)
-                .ToArray();
+                .ToList();
 
             var wordRectangles = fontManager.GenerateFonts(orderedRatings);
             var cloudScheme = cloudGenerator.Generate(wordRectangles);

@@ -8,7 +8,7 @@ namespace TagCloudGenerator.Processor
 {
     class OccurrenceStatistics
     {
-        public readonly Dictionary<string, int> OccurrenceCount;
+        public readonly IReadOnlyDictionary<string, int> OccurrenceCount;
 
         public OccurrenceStatistics(IEnumerable<string> words)
         {
