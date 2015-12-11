@@ -6,7 +6,7 @@ using TagCloudGenerator.FontManagers;
 
 namespace TagCloudGenerator.CloudGenerators
 {
-    class GravityCloudGenerator : ICloudGenerator
+    class GravityCloudGenerator
     {
         readonly Random random;
 

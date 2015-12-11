@@ -12,7 +12,8 @@ namespace TagCloudGenerator.CloudGenerators
     {   
         const int RandomSeed = 42;
 
-        static readonly IFontManager FontManagerExample = new LinearSizeFontManager(FontFamily.GenericSansSerif);
+        static readonly LinearSizeFontManager FontManagerExample =
+            new LinearSizeFontManager(FontFamily.GenericSansSerif);
         static readonly CenteredCloudGenerator GeneratorExample = new CenteredCloudGenerator(new Random(RandomSeed),
             new Options
             {

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace TagCloudGenerator.WordsSources
 {
-    class WordListReader : IWordSource
+    class WordListReader
     {
         readonly string filename;
 

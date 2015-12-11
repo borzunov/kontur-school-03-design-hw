@@ -4,7 +4,7 @@ using TagCloudGenerator.GrammarInfo;
 
 namespace TagCloudGenerator.WordsFilters
 {
-    class LengthFilter : IWordFilter
+    class LengthFilter
     {
         readonly int minLength;
 

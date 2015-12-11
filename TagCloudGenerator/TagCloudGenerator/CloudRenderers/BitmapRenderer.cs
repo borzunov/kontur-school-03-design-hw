@@ -7,7 +7,7 @@ using TagCloudGenerator.ColorManagers;
 
 namespace TagCloudGenerator.CloudRenderers
 {
-    class BitmapRenderer : ICloudRenderer
+    class BitmapRenderer
     {
         readonly string filename;
         readonly ImageFormat format;

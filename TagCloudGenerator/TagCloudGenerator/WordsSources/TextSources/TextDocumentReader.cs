@@ -2,7 +2,7 @@
 
 namespace TagCloudGenerator.WordsSources.TextSources
 {
-    class TextDocumentReader : ITextSource
+    class TextDocumentReader
     {
         readonly string filename;
 

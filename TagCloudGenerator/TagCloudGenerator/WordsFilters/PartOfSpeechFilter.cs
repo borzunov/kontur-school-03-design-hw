@@ -4,7 +4,7 @@ using TagCloudGenerator.GrammarInfo;
 
 namespace TagCloudGenerator.WordsFilters
 {
-    class PartOfSpeechFilter : IWordFilter
+    class PartOfSpeechFilter
     {
         readonly HashSet<PartOfSpeech> allowedPartsOfSpeech = new HashSet<PartOfSpeech>
         {

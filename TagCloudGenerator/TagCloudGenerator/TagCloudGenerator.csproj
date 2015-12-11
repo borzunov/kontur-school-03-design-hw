@@ -68,7 +68,6 @@
     <Compile Include="CloudGenerators\CenteredCloudGenerator.cs" />
     <Compile Include="CloudGenerators\CenteredCloudGenerator_Tests.cs" />
     <Compile Include="ColorManagers\ColoredCloudScheme.cs" />
-    <Compile Include="ColorManagers\IColorManager.cs" />
     <Compile Include="ColorManagers\RandomColorManager.cs" />
     <Compile Include="ColorManagers\WordView.cs" />
     <Compile Include="FontManagers\FontLoader.cs" />
@@ -78,7 +77,6 @@
     <Compile Include="CloudGenerators\RandomExtensions.cs" />
     <Compile Include="CloudGenerators\PlacedWordRectangle.cs" />
     <Compile Include="FontManagers\GraphicsFontMeasurer.cs" />
-    <Compile Include="FontManagers\IFontManager.cs" />
     <Compile Include="FontManagers\LinearSizeFontManager_Tests.cs" />
     <Compile Include="FontManagers\WordRectangle.cs" />
     <Compile Include="Processor\CloudProcessor.cs" />
@@ -96,18 +94,12 @@
     <Compile Include="GrammarInfo\GrammarFormJoiner.cs" />
     <Compile Include="WordsFilters\PartOfSpeechFilter_Tests.cs" />
     <Compile Include="WordsFilters\PartOfSpeechFilter.cs" />
-    <Compile Include="GrammarInfo\IGrammarInfoParser.cs" />
     <Compile Include="GrammarInfo\MystemGrammarInfoParser.cs" />
     <Compile Include="GrammarInfo\PartOfSpeech.cs" />
     <Compile Include="GrammarInfo\WordGrammarInfo.cs" />
-    <Compile Include="CloudGenerators\ICloudGenerator.cs" />
-    <Compile Include="CloudRenderers\ICloudRenderer.cs" />
-    <Compile Include="WordsFilters\IWordFilter.cs" />
-    <Compile Include="WordsSources\IWordSource.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WordsSources\TextSources\TextDocumentReader.cs" />
-    <Compile Include="WordsSources\TextSources\ITextSource.cs" />
     <Compile Include="WordsSources\TextSplitter_Tests.cs" />
     <Compile Include="WordsSources\TextSplitter.cs" />
     <Compile Include="WordsSources\WordListReader.cs" />

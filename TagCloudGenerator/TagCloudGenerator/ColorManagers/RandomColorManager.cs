@@ -5,7 +5,7 @@ using TagCloudGenerator.CloudGenerators;
 
 namespace TagCloudGenerator.ColorManagers
 {
-    class RandomColorManager : IColorManager
+    class RandomColorManager
     {
         readonly Random random;
 

@@ -6,7 +6,7 @@ using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.FontManagers
 {
-    class LinearSizeFontManager : IFontManager
+    class LinearSizeFontManager
     {
         public readonly FontFamily FontFamily;
 
