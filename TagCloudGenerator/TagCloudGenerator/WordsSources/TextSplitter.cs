@@ -8,7 +8,6 @@ namespace TagCloudGenerator.WordsSources
         {
             text = text + '\0';
             int? wordStart = null;
-            var words = new List<string>();
             for (var i = 0; i < text.Length; i++)
             {
                 var ch = text[i];
@@ -20,11 +19,10 @@ namespace TagCloudGenerator.WordsSources
                 }
                 if (wordStart != null)
                 {
-                    words.Add(text.Substring(wordStart.Value, i - wordStart.Value));
+                    yield return text.Substring(wordStart.Value, i - wordStart.Value);
                     wordStart = null;
                 }
             }
-            return words;
         }
     }
 }
