@@ -8,7 +8,7 @@ namespace TagCloudGenerator.ColorManagers
     {
         public readonly Color BackgroundColor;
 
-        public ColoredCloudScheme(Size size, List<T> wordViews, Color backgroundColor) : base(size, wordViews)
+        public ColoredCloudScheme(Size size, IReadOnlyList<T> wordViews, Color backgroundColor) : base(size, wordViews)
         {
             BackgroundColor = backgroundColor;
         }

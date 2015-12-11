@@ -15,7 +15,7 @@ namespace TagCloudGenerator.GrammarInfo
         public const string MystemExecutableFilename = "mystem.exe";
         const string MystemArguments = "-i -n";
 
-        static List<string> CommunicateWithProcess(IEnumerable<string> inputLines)
+        static IEnumerable<string> CommunicateWithProcess(IEnumerable<string> inputLines)
         {
             var process = new Process
             {
