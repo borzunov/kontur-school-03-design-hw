@@ -8,7 +8,7 @@ namespace TagCloudGenerator.CloudGenerators
         public readonly Size Size;
         public readonly IReadOnlyList<T> Words;
 
-        public CloudScheme(Size size, List<T> words)
+        public CloudScheme(Size size, IReadOnlyList<T> words)
         {
             Size = size;
             Words = words;
