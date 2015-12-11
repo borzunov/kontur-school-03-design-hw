@@ -17,10 +17,10 @@ namespace TagCloudGenerator.CloudGenerators
         readonly PlaceMethod[] placeMethods;
         readonly PointF imageCenter;
 
-        public GravityCloudGenerator(Random random, Options options)
+        public GravityCloudGenerator(Random random, Size size)
         {
             this.random = random;
-            Size = new Size(options.Width, options.Height);
+            Size = size;
 
             placeMethods = new PlaceMethod[]
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using TagCloudGenerator.CloudGenerators;
 using TagCloudGenerator.CloudRenderers;
@@ -19,18 +20,18 @@ namespace TagCloudGenerator
         {
             IEnumerable<string> words;
             if (options.WordList != null)
-                words = new WordListReader(options).GetWords();
+                words = new WordListReader(options.WordList).GetWords();
             else if (options.TextDocument != null)
             {
-                var text = new TextDocumentReader(options).GetText();
+                var text = new TextDocumentReader(options.TextDocument).GetText();
                 words = TextSplitter.GetWords(text);
             }
             else
                 throw new ArgumentException("You should specify either --word-list or --text");
 
             var fontFamily = FontLoader.LoadFontFamily(options.FontFile);
-
             var random = new Random();
+            var cloudSize = new Size(options.Width, options.Height);
 
             CloudProcessor.Process(
                 words,
@@ -38,13 +39,13 @@ namespace TagCloudGenerator
                 new WordFilter[]
                 {
                     new PartOfSpeechFilter().Filter,
-                    new LengthFilter(options).Filter, 
+                    new LengthFilter(options.MinLength).Filter, 
                 },
                 options.Count,
                 new LinearSizeFontManager(fontFamily).GenerateFonts, 
-                new GravityCloudGenerator(random, options).Generate,
-                new RandomColorManager(random, options).GenerateColors, 
-                new BitmapRenderer(options).Render);
+                new GravityCloudGenerator(random, cloudSize).Generate,
+                new RandomColorManager(random, options.BgColor).GenerateColors, 
+                new BitmapRenderer(options.OutputImage).Render);
         }
 
         static void Main(string[] args)

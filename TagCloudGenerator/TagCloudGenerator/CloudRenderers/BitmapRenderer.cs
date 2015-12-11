@@ -32,9 +32,9 @@ namespace TagCloudGenerator.CloudRenderers
             return ImageFormats[imageExtension];
         }
 
-        public BitmapRenderer(Options options)
+        public BitmapRenderer(string filename)
         {
-            filename = options.OutputImage;
+            this.filename = filename;
             format = GetImageFormat(filename);
         }
 

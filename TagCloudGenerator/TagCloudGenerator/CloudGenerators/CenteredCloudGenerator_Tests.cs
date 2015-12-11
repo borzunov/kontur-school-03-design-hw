@@ -14,12 +14,8 @@ namespace TagCloudGenerator.CloudGenerators
 
         static readonly LinearSizeFontManager FontManagerExample =
             new LinearSizeFontManager(FontFamily.GenericSansSerif);
-        static readonly CenteredCloudGenerator GeneratorExample = new CenteredCloudGenerator(new Random(RandomSeed),
-            new Options
-            {
-                Width = 200,
-                Height = 200
-            });
+        static readonly CenteredCloudGenerator GeneratorExample = new CenteredCloudGenerator(
+            new Random(RandomSeed), new Size(200, 200));
 
         [Test]
         public void Generate_createsSchemeOfGivenSize()

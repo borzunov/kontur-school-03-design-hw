@@ -12,11 +12,11 @@ namespace TagCloudGenerator.CloudGenerators
 
         public readonly Size Size;
 
-        public CenteredCloudGenerator(Random random, Options options)
+        public CenteredCloudGenerator(Random random, Size size)
         {
             this.random = random;
 
-            Size = new Size(options.Width, options.Height);
+            Size = size;
         }
 
         PlacedWordRectangle PlaceFirstWord(WordRectangle rectangle)

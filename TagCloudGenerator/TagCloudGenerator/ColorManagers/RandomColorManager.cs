@@ -11,10 +11,10 @@ namespace TagCloudGenerator.ColorManagers
 
         public readonly Color BackgroundColor;
 
-        public RandomColorManager(Random random, Options options)
+        public RandomColorManager(Random random, Color backgroundColor)
         {
             this.random = random;
-            BackgroundColor = options.BgColor;
+            BackgroundColor = backgroundColor;
         }
         
         const int MaxColorComponent = 128;

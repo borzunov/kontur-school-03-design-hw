@@ -8,10 +8,7 @@ namespace TagCloudGenerator.WordsFilters
         [Test]
         public void Filter_excludesWords_withLengthLesserThanMinimal()
         {
-            var filter = new LengthFilter(new Options
-            {
-                MinLength = 3
-            });
+            var filter = new LengthFilter(3);
             var words = new[] { "в", "на", "как", "активное", "хитрость" };
 
             var filteredWords = filter.Filter(words, null);
