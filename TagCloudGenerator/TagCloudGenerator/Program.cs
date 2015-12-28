@@ -27,7 +27,8 @@ namespace TagCloudGenerator
                 words = TextSplitter.GetWords(text);
             }
             else
-                throw new ArgumentException("You should specify either --word-list or --text");
+                throw new ArgumentException(
+                    "No word source specified (it had to be required by the argument parser)");
 
             var fontFamily = FontLoader.LoadFontFamily(options.FontFile);
             var random = new Random();
