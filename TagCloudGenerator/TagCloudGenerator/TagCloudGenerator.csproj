@@ -89,21 +89,21 @@
     <Compile Include="Processor\WordRatingTestHelper.cs" />
     <Compile Include="Program_PerformanceTests.cs" />
     <Compile Include="GrammarInfo\GrammarFormJoiner_Tests.cs" />
-    <Compile Include="WordsFilters\LengthFilter.cs" />
-    <Compile Include="WordsFilters\LengthFilter_Tests.cs" />
+    <Compile Include="WordFilters\LengthFilter.cs" />
+    <Compile Include="WordFilters\LengthFilter_Tests.cs" />
     <Compile Include="GrammarInfo\GrammarFormJoiner.cs" />
-    <Compile Include="WordsFilters\PartOfSpeechFilter_Tests.cs" />
-    <Compile Include="WordsFilters\PartOfSpeechFilter.cs" />
+    <Compile Include="WordFilters\PartOfSpeechFilter_Tests.cs" />
+    <Compile Include="WordFilters\PartOfSpeechFilter.cs" />
     <Compile Include="GrammarInfo\MystemGrammarInfoParser.cs" />
     <Compile Include="GrammarInfo\PartOfSpeech.cs" />
     <Compile Include="GrammarInfo\WordGrammarInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WordsSources\TextSources\TextDocumentReader.cs" />
-    <Compile Include="WordsSources\TextSplitter_Tests.cs" />
-    <Compile Include="WordsSources\TextSplitter.cs" />
-    <Compile Include="WordsSources\WordListReader.cs" />
-    <Compile Include="WordsSources\WordUtils.cs" />
+    <Compile Include="WordSources\TextSources\TextDocumentReader.cs" />
+    <Compile Include="WordSources\TextSplitter_Tests.cs" />
+    <Compile Include="WordSources\TextSplitter.cs" />
+    <Compile Include="WordSources\WordListReader.cs" />
+    <Compile Include="WordSources\WordUtils.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
