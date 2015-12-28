@@ -10,9 +10,9 @@ namespace TagCloudGenerator.GrammarInfo
 {
     static class MystemGrammarInfoParser
     {
-        public static readonly string MystemPath = AppDomain.CurrentDomain.BaseDirectory;
+        static readonly string MystemPath = AppDomain.CurrentDomain.BaseDirectory;
 
-        public const string MystemExecutableFilename = "mystem.exe";
+        const string MystemExecutableFilename = "mystem.exe";
         const string MystemArguments = "-i -n";
 
         static IEnumerable<string> CommunicateWithProcess(IEnumerable<string> inputLines)
