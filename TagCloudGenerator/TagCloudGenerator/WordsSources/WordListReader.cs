@@ -5,16 +5,9 @@ using System.Linq;
 
 namespace TagCloudGenerator.WordsSources
 {
-    class WordListReader
+    static class WordListReader
     {
-        readonly string filename;
-
-        public WordListReader(string filename)
-        {
-            this.filename = filename;
-        }
-
-        public IEnumerable<string> GetWords()
+        public static IEnumerable<string> GetWordsFrom(string filename)
         {
             var lines = File.ReadAllLines(filename);
             foreach (var line in lines.Where(line => line != ""))

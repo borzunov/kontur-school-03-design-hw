@@ -20,10 +20,10 @@ namespace TagCloudGenerator
         {
             IEnumerable<string> words;
             if (options.WordList != null)
-                words = new WordListReader(options.WordList).GetWords();
+                words = WordListReader.GetWordsFrom(options.WordList);
             else if (options.TextDocument != null)
             {
-                var text = new TextDocumentReader(options.TextDocument).GetText();
+                var text = TextDocumentReader.GetTextFrom(options.TextDocument);
                 words = TextSplitter.GetWords(text);
             }
             else
