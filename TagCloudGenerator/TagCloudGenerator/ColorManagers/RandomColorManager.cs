@@ -1,36 +1,29 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
-using TagCloudGenerator.CloudGenerators;
+using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.ColorManagers
 {
-    class RandomColorManager
+    static class RandomColorManager
     {
-        readonly Random random;
-
-        public readonly Color BackgroundColor;
-
-        public RandomColorManager(Random random, Color backgroundColor)
-        {
-            this.random = random;
-            BackgroundColor = backgroundColor;
-        }
-        
         const int MaxColorComponent = 128;
 
-        Color GenerateColor()
+        static Color GenerateColor(Random random)
         {
             return Color.FromArgb(
                 random.Next(MaxColorComponent), random.Next(MaxColorComponent), random.Next(MaxColorComponent));
         }
 
-        public ColoredCloudScheme<WordView> GenerateColors(CloudScheme<PlacedWordRectangle> scheme)
+        public static ColorManager GetColorManager(Random random, Color backgroundColor)
         {
-            var wordViews = scheme.Words
-                .Select(placedRectangle => new WordView(placedRectangle, GenerateColor()))
-                .ToList();
-            return new ColoredCloudScheme<WordView>(scheme.Size, wordViews, BackgroundColor);
+            return scheme =>
+            {
+                var wordViews = scheme.Words
+                    .Select(placedRectangle => new WordView(placedRectangle, GenerateColor(random)))
+                    .ToList();
+                return new ColoredCloudScheme<WordView>(scheme.Size, wordViews, backgroundColor);
+            };
         }
     }
 }

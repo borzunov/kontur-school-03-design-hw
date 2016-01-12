@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
+using TagCloudGenerator.WordSources;
 
 namespace TagCloudGenerator.WordsSources
 {

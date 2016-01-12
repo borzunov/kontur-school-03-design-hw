@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using TagCloudGenerator.ColorManagers;
+using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.CloudRenderers
 {
-    class BitmapRenderer
-    {
-        readonly string filename;
-        readonly ImageFormat format;
-        
+    static class BitmapRenderer
+    {   
         static readonly Dictionary<string, ImageFormat> ImageFormats = new Dictionary<string, ImageFormat>()
         {
             {".png", ImageFormat.Png},
@@ -32,27 +29,25 @@ namespace TagCloudGenerator.CloudRenderers
             return ImageFormats[imageExtension];
         }
 
-        public BitmapRenderer(string filename)
+        public static CloudRenderer GetCloudRenderer(string filename)
         {
-            this.filename = filename;
-            format = GetImageFormat(filename);
-        }
-
-        public void Render(ColoredCloudScheme<WordView> scheme)
-        {
-            using (var bitmap = new Bitmap(scheme.Size.Width, scheme.Size.Height))
+            var format = GetImageFormat(filename);
+            return scheme =>
             {
-                using (var g = Graphics.FromImage(bitmap))
+                using (var bitmap = new Bitmap(scheme.Size.Width, scheme.Size.Height))
                 {
-                    g.Clear(scheme.BackgroundColor);
-                    foreach (var view in scheme.Words)
+                    using (var g = Graphics.FromImage(bitmap))
                     {
-                        g.DrawString(view.Word, view.Font, new SolidBrush(view.Color), view.Position);
-                        //g.DrawRectangle(new Pen(Color.Black), new Rectangle(view.Position, view.Size));
+                        g.Clear(scheme.BackgroundColor);
+                        foreach (var view in scheme.Words)
+                        {
+                            g.DrawString(view.Word, view.Font, new SolidBrush(view.Color), view.Position);
+                            //g.DrawRectangle(new Pen(Color.Black), new Rectangle(view.Position, view.Size));
+                        }
                     }
+                    bitmap.Save(filename, format);
                 }
-                bitmap.Save(filename, format);
-            }
+            };
         }
     }
 }

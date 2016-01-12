@@ -1,4 +1,4 @@
-﻿namespace TagCloudGenerator.WordsSources
+﻿namespace TagCloudGenerator.WordSources
 {
     static class WordUtils
     {

@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace TagCloudGenerator.WordsSources.TextSources
+namespace TagCloudGenerator.WordSources.TextSources
 {
     static class TextDocumentReader
     {

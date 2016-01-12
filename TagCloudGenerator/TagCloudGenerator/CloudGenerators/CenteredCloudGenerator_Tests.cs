@@ -12,29 +12,31 @@ namespace TagCloudGenerator.CloudGenerators
     {   
         const int RandomSeed = 42;
 
-        static readonly LinearSizeFontManager FontManagerExample =
-            new LinearSizeFontManager(FontFamily.GenericSansSerif);
-        static readonly CenteredCloudGenerator GeneratorExample = new CenteredCloudGenerator(
-            new Random(RandomSeed), new Size(200, 200));
+        static readonly FontManager FontManager =
+            LinearSizeFontManager.GetFontManager(FontFamily.GenericSansSerif);
+
+        static readonly Size CloudSize = new Size(200, 200);
+        static readonly CloudGenerator CloudGenerator =
+            CenteredCloudGenerator.GetCloudGenerator(new Random(RandomSeed), CloudSize);
 
         [Test]
         public void Generate_createsSchemeOfGivenSize()
         {
             var orderedRatings = WordRatingTestHelper.GenerateRatings(new Random(RandomSeed), 10);
-            var wordRectangles = FontManagerExample.GenerateFonts(orderedRatings);
+            var wordRectangles = FontManager(orderedRatings);
 
-            var scheme = GeneratorExample.Generate(wordRectangles);
+            var scheme = CloudGenerator(wordRectangles);
             
-            scheme.Size.Should().Be(GeneratorExample.Size);
+            scheme.Size.Should().Be(CloudSize);
         }
 
         [Test]
         public void Generate_doesntCreateOverlappingWords()
         {
             var orderedRatings = WordRatingTestHelper.GenerateRatings(new Random(RandomSeed), 10);
-            var wordRectangles = FontManagerExample.GenerateFonts(orderedRatings);
+            var wordRectangles = FontManager(orderedRatings);
 
-            var scheme = GeneratorExample.Generate(wordRectangles);
+            var scheme = CloudGenerator(wordRectangles);
 
             foreach (var view1 in scheme.Words)
             {
@@ -53,9 +55,9 @@ namespace TagCloudGenerator.CloudGenerators
         public void Generate_skipTheRarestWords_ifTheyDontFit()
         {
             var orderedRatings = WordRatingTestHelper.GenerateRatings(new Random(RandomSeed), 50);
-            var wordRectangles = FontManagerExample.GenerateFonts(orderedRatings);
+            var wordRectangles = FontManager(orderedRatings);
 
-            var scheme = GeneratorExample.Generate(wordRectangles);
+            var scheme = CloudGenerator(wordRectangles);
 
             var wordsFromRating = orderedRatings
                 .Select(item => item.Word)
@@ -71,9 +73,9 @@ namespace TagCloudGenerator.CloudGenerators
         public void Generate_displaysAllWords_ifTheresALotOfSpace()
         {
             var orderedRatings = WordRatingTestHelper.GenerateRatings(new Random(RandomSeed), 5);
-            var wordRectangles = FontManagerExample.GenerateFonts(orderedRatings);
+            var wordRectangles = FontManager(orderedRatings);
 
-            var scheme = GeneratorExample.Generate(wordRectangles);
+            var scheme = CloudGenerator(wordRectangles);
 
             var wordsFromRating = orderedRatings
                 .Select(item => item.Word)

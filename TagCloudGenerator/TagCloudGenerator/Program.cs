@@ -8,9 +8,9 @@ using TagCloudGenerator.ColorManagers;
 using TagCloudGenerator.FontManagers;
 using TagCloudGenerator.GrammarInfo;
 using TagCloudGenerator.Processor;
-using TagCloudGenerator.WordsFilters;
-using TagCloudGenerator.WordsSources;
-using TagCloudGenerator.WordsSources.TextSources;
+using TagCloudGenerator.WordFilters;
+using TagCloudGenerator.WordSources;
+using TagCloudGenerator.WordSources.TextSources;
 
 namespace TagCloudGenerator
 {
@@ -37,16 +37,16 @@ namespace TagCloudGenerator
             CloudProcessor.Process(
                 words,
                 MystemGrammarInfoParser.GetGrammarInfo,
-                new WordFilter[]
+                new[]
                 {
-                    new PartOfSpeechFilter().Filter,
-                    new LengthFilter(options.MinLength).Filter, 
+                    PartOfSpeechFilter.GetFilter(),
+                    LengthFilter.GetFilter(options.MinLength)
                 },
                 options.Count,
-                new LinearSizeFontManager(fontFamily).GenerateFonts, 
-                new GravityCloudGenerator(random, cloudSize).Generate,
-                new RandomColorManager(random, options.BgColor).GenerateColors, 
-                new BitmapRenderer(options.OutputImage).Render);
+                LinearSizeFontManager.GetFontManager(fontFamily),
+                GravityCloudGenerator.GetCloudGenerator(random, cloudSize),
+                RandomColorManager.GetColorManager(random, options.BgColor),
+                BitmapRenderer.GetCloudRenderer(options.OutputImage));
         }
 
         static void Main(string[] args)

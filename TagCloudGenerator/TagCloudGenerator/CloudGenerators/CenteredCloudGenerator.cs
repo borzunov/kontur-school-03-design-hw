@@ -3,43 +3,33 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using TagCloudGenerator.FontManagers;
+using TagCloudGenerator.Processor;
 
 namespace TagCloudGenerator.CloudGenerators
 {
-    class CenteredCloudGenerator
+    static class CenteredCloudGenerator
     {
-        readonly Random random;
-
-        public readonly Size Size;
-
-        public CenteredCloudGenerator(Random random, Size size)
-        {
-            this.random = random;
-
-            Size = size;
-        }
-
-        PlacedWordRectangle PlaceFirstWord(WordRectangle rectangle)
+        static PlacedWordRectangle PlaceFirstWord(WordRectangle rectangle, Size cloudSize)
         {
             var position = new Point(
-                (Size.Width - rectangle.Size.Width) / 2,
-                (Size.Height - rectangle.Size.Height) / 2
+                (cloudSize.Width - rectangle.Size.Width) / 2,
+                (cloudSize.Height - rectangle.Size.Height) / 2
             );
             return new PlacedWordRectangle(rectangle, position);
         }
 
-        PlacedWordRectangle PlaceNextWord(WordRectangle rectangle,
-            IReadOnlyList<PlacedWordRectangle> alreadyPlacedWords)
+        static PlacedWordRectangle PlaceNextWord(WordRectangle rectangle,
+            IReadOnlyList<PlacedWordRectangle> alreadyPlacedWords, Random random, Size cloudSize)
         {
-            if (rectangle.Size.Width > Size.Width || rectangle.Size.Height > Size.Height)
+            if (rectangle.Size.Width > cloudSize.Width || rectangle.Size.Height > cloudSize.Height)
                 return null;
 
             var triesCount = Math.Max(50, alreadyPlacedWords.Count * 2);
             for (var i = 0; i < triesCount; i++)
             {
                 var curPosition = new Point(
-                    random.Next(0, Size.Width - rectangle.Size.Width),
-                    random.Next(0, Size.Height - rectangle.Size.Height)
+                    random.Next(0, cloudSize.Width - rectangle.Size.Width),
+                    random.Next(0, cloudSize.Height - rectangle.Size.Height)
                 );
                 var curRect = new Rectangle(curPosition, rectangle.Size);
 
@@ -52,22 +42,25 @@ namespace TagCloudGenerator.CloudGenerators
             return null;
         }
 
-        public CloudScheme<PlacedWordRectangle> Generate(IEnumerable<WordRectangle> wordRectangles)
+        public static CloudGenerator GetCloudGenerator(Random random, Size cloudSize)
         {
-            var rectanglesArray = wordRectangles.ToArray();
-            if (rectanglesArray.Length == 0)
-                return new CloudScheme<PlacedWordRectangle>(Size, new List<PlacedWordRectangle>());
-
-            var wordsViews = new List<PlacedWordRectangle> { PlaceFirstWord(rectanglesArray[0]) };
-            foreach (var rectangle in rectanglesArray.Skip(1))
+            return wordRectangles =>
             {
-                var view = PlaceNextWord(rectangle, wordsViews);
-                if (view == null)
-                    break;
-                wordsViews.Add(view);
-            }
+                var rectanglesArray = wordRectangles.ToArray();
+                if (rectanglesArray.Length == 0)
+                    return new CloudScheme<PlacedWordRectangle>(cloudSize, new List<PlacedWordRectangle>());
 
-            return new CloudScheme<PlacedWordRectangle>(Size, wordsViews);
+                var wordsViews = new List<PlacedWordRectangle> {PlaceFirstWord(rectanglesArray[0], cloudSize)};
+                foreach (var rectangle in rectanglesArray.Skip(1))
+                {
+                    var view = PlaceNextWord(rectangle, wordsViews, random, cloudSize);
+                    if (view == null)
+                        break;
+                    wordsViews.Add(view);
+                }
+
+                return new CloudScheme<PlacedWordRectangle>(cloudSize, wordsViews);
+            };
         }
     }
 }

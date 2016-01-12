@@ -1,23 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TagCloudGenerator.GrammarInfo;
+using TagCloudGenerator.Processor;
 
-namespace TagCloudGenerator.WordsFilters
+namespace TagCloudGenerator.WordFilters
 {
-    class PartOfSpeechFilter
+    static class PartOfSpeechFilter
     {
-        readonly HashSet<PartOfSpeech> allowedPartsOfSpeech = new HashSet<PartOfSpeech>
+        static readonly HashSet<PartOfSpeech> AllowedPartsOfSpeech = new HashSet<PartOfSpeech>
         {
             PartOfSpeech.Adjective,
             PartOfSpeech.Noun,
         };
 
-        public IEnumerable<string> Filter(IEnumerable<string> words,
-            IReadOnlyDictionary<string, WordGrammarInfo> grammarInfo)
+        public static WordFilter GetFilter()
         {
-            return words
+            return (words, grammarInfo) => words
                 .Where(word => grammarInfo.ContainsKey(word) &&
-                               allowedPartsOfSpeech.Contains(grammarInfo[word].PartOfSpeech));
+                               AllowedPartsOfSpeech.Contains(grammarInfo[word].PartOfSpeech));
         }
     }
 }

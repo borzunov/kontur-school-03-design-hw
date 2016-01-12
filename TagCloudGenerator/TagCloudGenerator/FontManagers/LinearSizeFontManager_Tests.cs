@@ -15,9 +15,9 @@ namespace TagCloudGenerator.FontManagers
         public void GenerateFonts_decreasesFontSizeWithWordPopularity()
         {
             var orderedRatings = WordRatingTestHelper.GenerateRatings(new Random(RandomSeed), 10);
-            var fontManager = new LinearSizeFontManager(FontFamily.GenericSansSerif);
+            var fontManager = LinearSizeFontManager.GetFontManager(FontFamily.GenericSansSerif);
 
-            var wordRectangles = fontManager.GenerateFonts(orderedRatings).ToArray();
+            var wordRectangles = fontManager(orderedRatings).ToArray();
 
             var rectanglesDictionary = wordRectangles
                 .ToDictionary(rectangle => rectangle.Word, rectangle => rectangle);

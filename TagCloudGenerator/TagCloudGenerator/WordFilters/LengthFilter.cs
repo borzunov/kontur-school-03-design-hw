@@ -1,22 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using TagCloudGenerator.GrammarInfo;
+﻿using System.Linq;
+using TagCloudGenerator.Processor;
 
-namespace TagCloudGenerator.WordsFilters
+namespace TagCloudGenerator.WordFilters
 {
-    class LengthFilter
+    static class LengthFilter
     {
-        readonly int minLength;
-
-        public LengthFilter(int minLength)
+        public static WordFilter GetFilter(int minLength)
         {
-            this.minLength = minLength;
-        }
-
-        public IEnumerable<string> Filter(IEnumerable<string> words,
-            IReadOnlyDictionary<string, WordGrammarInfo> grammarInfo)
-        {
-            return words.Where(word => word.Length >= minLength);
+            return (words, grammarInfo) => words.Where(word => word.Length >= minLength);
         }
     }
 }
